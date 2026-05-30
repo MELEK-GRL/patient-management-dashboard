@@ -67,7 +67,7 @@ const Input = ({
         max={max}
         disabled={disabled}
         onChange={(e) => onChange?.(e.target.value)}
-        className="w-full rounded-lg border px-4 py-2.5 text-sm font-semibold outline-none placeholder:font-medium focus:ring-2 disabled:cursor-not-allowed"
+        className="w-full rounded-lg border px-4 py-2.5 text-sm font-semibold outline-none placeholder:font-medium transition-colors focus:border-[#CBD5E1] disabled:cursor-not-allowed"
         style={{
           borderColor: colors.fieldBorder,
           backgroundColor: disabled

@@ -68,7 +68,7 @@ const DatePicker = ({
           disabled={disabled}
           onChange={(event) => onChange?.(event.target.value)}
           className={clsx(
-            'w-full rounded-lg border px-4 py-2.5 pr-10 text-sm font-normal outline-none focus:ring-2 disabled:cursor-not-allowed',
+            'w-full rounded-lg border px-4 py-2.5 pr-10 text-sm font-normal outline-none transition-colors focus:border-[#CBD5E1] disabled:cursor-not-allowed',
             DatePickerTextStyle,
           )}
           style={{
