@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../components/atoms/Button/Button';
 import Loading from '../../components/atoms/FeedBack/Loading';
 import CenterModal from '../../components/atoms/Modal/CenterModal';
+import PopupModal from '../../components/atoms/Modal/PopupModal';
 import T from '../../components/atoms/Text/T';
 import Dropdown from '../../components/molecules/Dropdown/Dropdown';
 import EmptyState from '../../components/atoms/FeedBack/EmptyState';
@@ -34,6 +35,23 @@ export default function Dashboard() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingPatientId, setEditingPatientId] =
     useState<string | null>(null);
+  const [loadErrorOpen, setLoadErrorOpen] = useState(false);
+
+  const fetchPatients = useCallback(async () => {
+    setIsLoading(true);
+    setLoadErrorOpen(false);
+
+    try {
+      const data = await getPatients();
+      console.log("--->data",JSON.stringify(data,null,2));
+      dispatch(setPatients(data));
+    } catch (error) {
+      console.error(error);
+      setLoadErrorOpen(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch]);
 
   const selectedPatient = useMemo(
     () =>
@@ -103,20 +121,8 @@ export default function Dashboard() {
   }, [status, dateSort, isListLoading]);
 
   useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const data = await getPatients();
-        console.log("--->data",JSON.stringify(data,null,2));
-        dispatch(setPatients(data));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchPatients();
-  }, [dispatch]);
+  }, [fetchPatients]);
 
   const statusOptions = useMemo(() => {
     const statuses = [
@@ -160,6 +166,17 @@ export default function Dashboard() {
 
   return (
     <>
+      <PopupModal
+        open={loadErrorOpen}
+        onClose={() => setLoadErrorOpen(false)}
+        status="error"
+        message={t('loadPatientsErrorMessage')}
+        leftButtonText={t('cancel')}
+        rightButtonText={t('retry')}
+        onLeftButtonClick={() => setLoadErrorOpen(false)}
+        onRightButtonClick={fetchPatients}
+      />
+
       <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
         <div className="min-w-0 flex-1">
           <SearchInput value={search} onChange={setSearch} />

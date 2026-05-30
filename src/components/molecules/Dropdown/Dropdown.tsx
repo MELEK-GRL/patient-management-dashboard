@@ -42,7 +42,7 @@ const Dropdown = ({
   onChange,
   placeholder,
   className,
-  fontWeight = 'semibold',
+  fontWeight = 'normal',
 }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -51,7 +51,7 @@ const Dropdown = ({
   const visibleOptions = getVisibleOptions(options, placeholder);
   const selectedOption = visibleOptions.find((option) => option.value === value);
   const buttonLabel = getButtonLabel(selectedOption, value, placeholder);
-  const buttonTextColor = getButtonTextColor(fontWeight, value, selectedOption);
+  const buttonTextColor = getButtonTextColor(value, selectedOption);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -123,7 +123,7 @@ const Dropdown = ({
           id={menuId}
           role="listbox"
           aria-label={label}
-          className="absolute left-0 right-0 z-70 mt-1.5 max-h-48 overflow-y-auto overscroll-contain rounded-xl border py-1 shadow-lg"
+          className="absolute left-0 right-0 z-70 mt-0.5 max-h-48 overflow-y-auto overscroll-contain rounded-lg border py-1 shadow-lg"
           style={fieldStyle}
         >
           {visibleOptions.map((option) => (
@@ -250,11 +250,9 @@ function getButtonLabel(
 }
 
 function getButtonTextColor(
-  fontWeight: 'normal' | 'semibold',
   value: string,
   selectedOption: DropdownOption | undefined,
 ): string {
-  if (fontWeight === 'normal') return colors.dropdownTextPlaceholder;
   if (value && selectedOption) return colors.dropdownTextValue;
   return colors.dropdownTextPlaceholder;
 }

@@ -58,6 +58,8 @@ const PatientForm = ({
   const [isSaving, setIsSaving] = useState(false);
   const [isValidationModalOpen, setIsValidationModalOpen] =
     useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const departmentOptions = useMemo(
     () =>
@@ -126,12 +128,18 @@ const PatientForm = ({
       }
 
       setForm(createInitialPatientFormState());
-      onSuccess?.();
+      setIsSuccessModalOpen(true);
     } catch (error) {
       console.error(error);
+      setIsErrorModalOpen(true);
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleCloseSuccess = () => {
+    setIsSuccessModalOpen(false);
+    onSuccess?.();
   };
 
   return (
@@ -302,7 +310,6 @@ const PatientForm = ({
 
           <Textarea
             label={t('note')}
-            required
             placeholder={t('patientFormNotePlaceholder')}
             rows={2}
             value={form.note}
@@ -340,6 +347,30 @@ const PatientForm = ({
         rightButtonText={t('ok')}
         rightButtonVariant="primary"
         onRightButtonClick={() => setIsValidationModalOpen(false)}
+      />
+
+      <PopupModal
+        open={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        status="error"
+        message={t('savePatientErrorMessage')}
+        rightButtonText={t('ok')}
+        rightButtonVariant="primary"
+        onRightButtonClick={() => setIsErrorModalOpen(false)}
+      />
+
+      <PopupModal
+        open={isSuccessModalOpen}
+        onClose={handleCloseSuccess}
+        status="success"
+        message={t(
+          isEdit
+            ? 'updatePatientSuccessMessage'
+            : 'savePatientSuccessMessage',
+        )}
+        rightButtonText={t('ok')}
+        rightButtonVariant="primary"
+        onRightButtonClick={handleCloseSuccess}
       />
     </div>
   );

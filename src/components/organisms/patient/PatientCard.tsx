@@ -30,7 +30,7 @@ const getPriorityBorderColor = (priority: string) =>
   priorityBorderColors[priority] ?? colors.patientCardBorderDefault;
 
 const CARD_LAYOUT =
-  'relative rounded-xl border border-slate-200 border-l-[3px] bg-white shadow-sm transition-shadow hover:shadow-md';
+  'relative rounded-lg border border-slate-200 border-l-[3px] bg-white shadow-sm transition-shadow hover:shadow-md';
 
 const PatientCard = ({
   patient,
@@ -42,6 +42,7 @@ const PatientCard = ({
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleteSuccessOpen, setIsDeleteSuccessOpen] = useState(false);
 
   const appointmentLabel = formatDate(patient.appointmentDate);
 
@@ -67,6 +68,7 @@ const PatientCard = ({
     dispatch(deletePatient(patient.id));
     onDeletePatient?.(patient.id);
     setIsDeleteOpen(false);
+    setIsDeleteSuccessOpen(true);
   };
 
   const patientInfo = useMemo(
@@ -156,12 +158,12 @@ const PatientCard = ({
         open={isMenuOpen}
         onClose={handleCloseMenu}
         status="info"
+        message={t('patientActionMessage')}
         leftButtonText={t('edit')}
         rightButtonText={t('delete')}
         leftButtonVariant="cancel"
         onLeftButtonClick={handleOpenEdit}
         onRightButtonClick={handleOpenDelete}
-        buttonDirection="column"
       />
 
       <PopupModal
@@ -173,6 +175,16 @@ const PatientCard = ({
         rightButtonText={t('delete')}
         onLeftButtonClick={handleCloseDelete}
         onRightButtonClick={handleConfirmDelete}
+      />
+
+      <PopupModal
+        open={isDeleteSuccessOpen}
+        onClose={() => setIsDeleteSuccessOpen(false)}
+        status="success"
+        message={t('deletePatientSuccessMessage')}
+        rightButtonText={t('ok')}
+        rightButtonVariant="primary"
+        onRightButtonClick={() => setIsDeleteSuccessOpen(false)}
       />
     </>
   );

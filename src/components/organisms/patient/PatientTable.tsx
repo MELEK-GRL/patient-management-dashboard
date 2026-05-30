@@ -46,6 +46,7 @@ const PatientTable = ({
   const dispatch = useDispatch();
   const [patientToDelete, setPatientToDelete] =
     useState<Patient | null>(null);
+  const [isDeleteSuccessOpen, setIsDeleteSuccessOpen] = useState(false);
 
   const handleCloseDeleteModal = () => {
     setPatientToDelete(null);
@@ -59,6 +60,7 @@ const PatientTable = ({
     dispatch(deletePatient(patientToDelete.id));
     onDeletePatient?.(patientToDelete.id);
     setPatientToDelete(null);
+    setIsDeleteSuccessOpen(true);
   };
 
   const headers = useMemo(
@@ -218,6 +220,16 @@ const PatientTable = ({
         rightButtonText={t('delete')}
         onLeftButtonClick={handleCloseDeleteModal}
         onRightButtonClick={handleConfirmDelete}
+      />
+
+      <PopupModal
+        open={isDeleteSuccessOpen}
+        onClose={() => setIsDeleteSuccessOpen(false)}
+        status="success"
+        message={t('deletePatientSuccessMessage')}
+        rightButtonText={t('ok')}
+        rightButtonVariant="primary"
+        onRightButtonClick={() => setIsDeleteSuccessOpen(false)}
       />
     </div>
   );

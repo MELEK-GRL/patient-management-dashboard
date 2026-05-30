@@ -1,15 +1,18 @@
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import type { IconType } from 'react-icons';
 import {
   HiOutlineCheckCircle,
   HiOutlineExclamationCircle,
   HiOutlineInformationCircle,
+  HiOutlineXCircle,
 } from 'react-icons/hi';
 
 import Button, { type ButtonVariant } from '../Button/Button';
 import T from '../Text/T';
 
-export type PopupModalStatus = 'danger' | 'success' | 'info';
+export type PopupModalStatus = 'error' | 'danger' | 'success' | 'info';
 
 interface PopupModalProps {
   open: boolean;
@@ -30,6 +33,11 @@ const statusConfig: Record<
   PopupModalStatus,
   { Icon: IconType; circle: string; icon: string }
 > = {
+  error: {
+    Icon: HiOutlineXCircle,
+    circle: 'bg-red-50 ring-1 ring-red-100',
+    icon: 'text-red-600',
+  },
   danger: {
     Icon: HiOutlineExclamationCircle,
     circle: 'bg-red-50 ring-1 ring-red-100',
@@ -61,6 +69,17 @@ const PopupModal = ({
   rightButtonVariant = 'danger',
   buttonDirection = 'row',
 }: PopupModalProps) => {
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   if (!open) {
     return null;
   }
@@ -70,9 +89,9 @@ const PopupModal = ({
   const iconStyles = statusConfig[status];
   const StatusIcon = iconStyles.Icon;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-[60] flex h-dvh min-h-dvh items-center justify-center bg-black/40 p-4"
       onClick={handleClose}
     >
       <div
@@ -153,7 +172,8 @@ const PopupModal = ({
           </div>
         ) : null}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

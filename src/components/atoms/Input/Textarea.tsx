@@ -61,13 +61,14 @@ const Textarea = ({
         placeholder={placeholder}
         disabled={disabled}
         onChange={(e) => onChange?.(e.target.value)}
-        className="min-h-22 w-full resize-y rounded-lg border px-4 py-2.5 text-sm font-semibold outline-none placeholder:font-medium transition-colors focus:border-[#CBD5E1] disabled:cursor-not-allowed"
+        className="min-h-22 w-full resize-y rounded-lg border px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#CBD5E1] disabled:cursor-not-allowed placeholder:text-slate-400"
         style={{
           borderColor: colors.fieldBorder,
           backgroundColor: disabled
             ? colors.fieldDisabledBackground
             : colors.fieldBackground,
           color: disabled ? colors.fieldDisabledText : colors.fieldText,
+          fontWeight: 400,
         }}
       />
 

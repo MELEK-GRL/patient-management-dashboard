@@ -22,6 +22,18 @@ const splitName = (fullName: string) => {
   };
 };
 
+const EMPTY_NOTE = '-';
+
+const formatNoteForSave = (note: string) => note.trim() || EMPTY_NOTE;
+
+const formatNoteForForm = (note: string) => {
+  const trimmed = note.trim();
+  return !trimmed || trimmed === EMPTY_NOTE ? '' : trimmed;
+};
+
+export const formatNoteForDisplay = (note: string) =>
+  note.trim() || EMPTY_NOTE;
+
 export const mapPatientToForm = (
   patient: Patient,
   language = 'tr',
@@ -40,7 +52,7 @@ export const mapPatientToForm = (
     score: String(patient.score),
     bloodType: patient.bloodType,
     diagnosis: isEn ? patient.diagnosis_en : patient.diagnosis_tr,
-    note: isEn ? patient.note_en : patient.note_tr,
+    note: formatNoteForForm(isEn ? patient.note_en : patient.note_tr),
     isInsured: patient.isInsured,
     isFollowUp: patient.isFollowUp,
     isVaccinated: patient.isVaccinated,
@@ -57,15 +69,14 @@ export const isPatientFormValid = (form: PatientFormState) =>
   form.priority !== '' &&
   form.score !== '' &&
   form.bloodType !== '' &&
-  form.diagnosis.trim() !== '' &&
-  form.note.trim() !== '';
+  form.diagnosis.trim() !== '';
 
 export const mapFormToPatient = (
   form: PatientFormState,
   existing?: Patient,
   language = 'tr',
 ): Patient => {
-  const note = form.note.trim();
+  const note = formatNoteForSave(form.note);
   const diagnosis = form.diagnosis.trim();
   const isEn = language === 'en';
 

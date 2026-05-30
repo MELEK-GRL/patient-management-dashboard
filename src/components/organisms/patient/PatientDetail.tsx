@@ -120,7 +120,7 @@ const PatientDetail = ({ patient }: PatientDetailProps) => {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-slate-200">
+      <div className="overflow-hidden rounded-lg border border-slate-200">
         <PanelSection title={t('information')}>
           {patientDetails
             .filter((row) => row.value)

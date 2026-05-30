@@ -2,6 +2,7 @@ import type { TFunction } from 'i18next';
 import type { ReactNode } from 'react';
 
 import type { Patient } from '../../../../types/patient.types';
+import { formatNoteForDisplay } from '../../../../services/PatientService/patient.service';
 import { formatDate } from '../../../../utils/formatDate';
 import { formatBoolean } from '../../../../utils/patientSatus';
 
@@ -54,7 +55,7 @@ export const getPatientDetails = (
     },
     {
       label: t('note'),
-      value: isEn ? patient.note_en : patient.note_tr,
+      value: formatNoteForDisplay(isEn ? patient.note_en : patient.note_tr),
       multiline: true,
     },
   ];

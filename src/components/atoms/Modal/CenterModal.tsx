@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 
 import T from '../Text/T';
@@ -23,11 +24,22 @@ const CenterModal = ({
   onClose,
   size = 'md',
 }: CenterModalProps) => {
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   if (!open) {
     return null;
   }
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
       className="
@@ -35,10 +47,13 @@ const CenterModal = ({
         inset-0
         z-50
         flex
-        items-center
+        h-dvh
+        min-h-dvh
+        items-start
         justify-center
         bg-black/40
         p-4
+        sm:items-center
       "
     >
       <div
@@ -115,7 +130,8 @@ const CenterModal = ({
           {children}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
