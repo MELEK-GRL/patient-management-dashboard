@@ -170,7 +170,7 @@ export default function Dashboard() {
           options={statusOptions}
           onChange={handleStatusChange}
           placeholder={t('select')}
-          weight="normal"
+          fontWeight="normal"
           className="lg:w-44"
         />
 
@@ -178,7 +178,7 @@ export default function Dashboard() {
           value={dateSort}
           options={dateSortOptions}
           onChange={handleDateSortChange}
-          weight="normal"
+          fontWeight="normal"
           className="lg:w-48"
         />
       </div>

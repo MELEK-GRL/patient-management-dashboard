@@ -1,10 +1,8 @@
 import {
-  useCallback,
   useEffect,
   useId,
   useRef,
   useState,
-  type RefObject,
 } from 'react';
 import clsx from 'clsx';
 import { HiOutlineCheck, HiOutlineChevronDown } from 'react-icons/hi';
@@ -22,14 +20,19 @@ interface DropdownProps {
   required?: boolean;
   value: string;
   options: DropdownOption[];
-  onChange: (value: string) => void;
+  onChange: (selectedValue: string) => void;
   placeholder?: string;
   className?: string;
-  weight?: 'normal' | 'semibold';
+  fontWeight?: 'normal' | 'semibold';
 }
 
-const focusStyle =
-  'flex w-full items-center justify-between gap-2 rounded-lg border py-2.5 pl-4 pr-3.5 text-left text-sm outline-none transition-[border-color,box-shadow] focus:ring-2';
+const fieldStyle = {
+  borderColor: colors.fieldBorder,
+  backgroundColor: colors.fieldBackground,
+};
+
+const buttonClass =
+  'flex w-full items-center justify-between gap-2 rounded-lg border py-2.5 pl-4 pr-3.5 text-left text-sm outline-none transition-colors focus:border-[#CBD5E1]';
 
 const Dropdown = ({
   label,
@@ -39,89 +42,70 @@ const Dropdown = ({
   onChange,
   placeholder,
   className,
-  weight = 'semibold',
+  fontWeight = 'semibold',
 }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const listboxId = useId();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
 
-  const listOptions = placeholder
-    ? options.filter((option) => option.value !== '')
-    : options;
+  const visibleOptions = getVisibleOptions(options, placeholder);
+  const selectedOption = visibleOptions.find((option) => option.value === value);
+  const buttonLabel = getButtonLabel(selectedOption, value, placeholder);
+  const buttonTextColor = getButtonTextColor(fontWeight, value, selectedOption);
 
-  const selectedOption = listOptions.find(
-    (option) => option.value === value,
-  );
+  useEffect(() => {
+    if (!isOpen) return;
 
-  const displayLabel =
-    selectedOption?.label ??
-    (placeholder && !value ? placeholder : '');
+    const handleOutsideClick = (event: PointerEvent) => {
+      if (!dropdownRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
 
-  const textColor =
-    weight === 'normal'
-      ? colors.dropdownTextPlaceholder
-      : value && selectedOption
-        ? colors.dropdownTextValue
-        : colors.dropdownTextPlaceholder;
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
 
-  const closeDropdown = useCallback(() => setIsOpen(false), []);
-  useDismissOnOutsideAndEscape(containerRef, isOpen, closeDropdown);
+    document.addEventListener('pointerdown', handleOutsideClick);
+    document.addEventListener('keydown', handleEscape);
 
-  const handleSelect = (optionValue: string) => {
-    onChange(optionValue);
+    return () => {
+      document.removeEventListener('pointerdown', handleOutsideClick);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
+
+  const handleSelect = (newValue: string) => {
+    onChange(newValue);
     setIsOpen(false);
   };
 
   return (
     <div
-      ref={containerRef}
+      ref={dropdownRef}
       className={clsx('relative w-full min-w-40', className)}
     >
-      {label ? (
-        <div className="flex items-center gap-1">
-          <T
-            as="span"
-            font="small"
-            className="text-sm font-bold tracking-wide"
-            style={{ color: colors.formLabel }}
-          >
-            {label}
-          </T>
-          {required ? (
-            <span
-              className="text-sm font-bold"
-              style={{ color: colors.formRequired }}
-              aria-hidden
-            >
-              *
-            </span>
-          ) : null}
-        </div>
-      ) : null}
+      {label && <DropdownLabel label={label} required={required} />}
 
       <button
         type="button"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        aria-controls={listboxId}
+        aria-controls={menuId}
         onClick={() => setIsOpen((open) => !open)}
-        className={focusStyle}
-        style={{
-          borderColor: colors.fieldBorder,
-          backgroundColor: colors.fieldBackground,
-          color: colors.fieldText,
-        }}
+        className={buttonClass}
+        style={{ ...fieldStyle, color: colors.fieldText }}
       >
         <T
           as="span"
           font="small"
           className={clsx(
             'min-w-0 flex-1 truncate',
-            weight === 'normal' ? 'font-normal' : 'font-semibold',
+            fontWeight === 'normal' ? 'font-normal' : 'font-semibold',
           )}
-          style={{ color: textColor }}
+          style={{ color: buttonTextColor }}
         >
-          {displayLabel}
+          {buttonLabel}
         </T>
 
         <HiOutlineChevronDown
@@ -134,106 +118,145 @@ const Dropdown = ({
         />
       </button>
 
-      {isOpen ? (
+      {isOpen && (
         <ul
-          id={listboxId}
+          id={menuId}
           role="listbox"
           aria-label={label}
           className="absolute left-0 right-0 z-70 mt-1.5 max-h-48 overflow-y-auto overscroll-contain rounded-xl border py-1 shadow-lg"
-          style={{
-            borderColor: colors.fieldBorder,
-            backgroundColor: colors.fieldBackground,
-          }}
+          style={fieldStyle}
         >
-          {listOptions.map((option) => {
-            const isSelected = option.value === value;
-
-            return (
-              <li key={option.value} role="presentation">
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={isSelected}
-                  onClick={() => handleSelect(option.value)}
-                  className="flex w-full items-center gap-2 px-3.5 py-2 text-left outline-none"
-                  style={{
-                    backgroundColor: isSelected
-                      ? colors.dropdownOptionSelectedBg
-                      : undefined,
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.backgroundColor =
-                        colors.dropdownOptionHoverBg;
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.backgroundColor = '';
-                    }
-                  }}
-                >
-                  <span
-                    className="flex h-4 w-4 shrink-0 items-center justify-center"
-                    style={{
-                      color: isSelected
-                        ? colors.dropdownCheckIcon
-                        : 'transparent',
-                    }}
-                    aria-hidden
-                  >
-                    <HiOutlineCheck className="h-4 w-4" />
-                  </span>
-
-                  <T
-                    as="span"
-                    font={isSelected ? 'semiBold' : 'small'}
-                    className="min-w-0 flex-1 truncate"
-                    style={{
-                      color: isSelected
-                        ? colors.dropdownOptionTextSelected
-                        : colors.dropdownOptionText,
-                    }}
-                  >
-                    {option.label}
-                  </T>
-                </button>
-              </li>
-            );
-          })}
+          {visibleOptions.map((option) => (
+            <DropdownOptionItem
+              key={option.value}
+              option={option}
+              isSelected={option.value === value}
+              onSelect={handleSelect}
+            />
+          ))}
         </ul>
-      ) : null}
+      )}
     </div>
   );
 };
 
-function useDismissOnOutsideAndEscape(
-  containerRef: RefObject<HTMLElement | null>,
-  isActive: boolean,
-  onDismiss: () => void,
-) {
-  useEffect(() => {
-    if (!isActive) return;
+function DropdownLabel({
+  label,
+  required,
+}: {
+  label: string;
+  required?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-1">
+      <T
+        as="span"
+        font="small"
+        className="text-sm font-bold tracking-wide"
+        style={{ color: colors.formLabel }}
+      >
+        {label}
+      </T>
+      {required && (
+        <span
+          className="text-sm font-bold"
+          style={{ color: colors.formRequired }}
+          aria-hidden
+        >
+          *
+        </span>
+      )}
+    </div>
+  );
+}
 
-    const onPointerDown = (event: PointerEvent) => {
-      const container = containerRef.current;
-      if (container && !container.contains(event.target as Node)) {
-        onDismiss();
-      }
-    };
+function DropdownOptionItem({
+  option,
+  isSelected,
+  onSelect,
+}: {
+  option: DropdownOption;
+  isSelected: boolean;
+  onSelect: (value: string) => void;
+}) {
+  return (
+    <li role="presentation">
+      <button
+        type="button"
+        role="option"
+        aria-selected={isSelected}
+        onClick={() => onSelect(option.value)}
+        className="flex w-full items-center gap-2 px-3.5 py-2 text-left outline-none"
+        style={{
+          backgroundColor: isSelected
+            ? colors.dropdownOptionSelectedBg
+            : undefined,
+        }}
+        onMouseEnter={(event) => {
+          if (!isSelected) {
+            event.currentTarget.style.backgroundColor =
+              colors.dropdownOptionHoverBg;
+          }
+        }}
+        onMouseLeave={(event) => {
+          if (!isSelected) {
+            event.currentTarget.style.backgroundColor = '';
+          }
+        }}
+      >
+        <span
+          className="flex h-4 w-4 shrink-0 items-center justify-center"
+          style={{
+            color: isSelected ? colors.dropdownCheckIcon : 'transparent',
+          }}
+          aria-hidden
+        >
+          <HiOutlineCheck className="h-4 w-4" />
+        </span>
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onDismiss();
-    };
+        <T
+          as="span"
+          font={isSelected ? 'semiBold' : 'small'}
+          className="min-w-0 flex-1 truncate"
+          style={{
+            color: isSelected
+              ? colors.dropdownOptionTextSelected
+              : colors.dropdownOptionText,
+          }}
+        >
+          {option.label}
+        </T>
+      </button>
+    </li>
+  );
+}
 
-    document.addEventListener('pointerdown', onPointerDown);
-    document.addEventListener('keydown', onKeyDown);
+function getVisibleOptions(
+  options: DropdownOption[],
+  placeholder?: string,
+): DropdownOption[] {
+  if (!placeholder) return options;
+  return options.filter((option) => option.value !== '');
+}
 
-    return () => {
-      document.removeEventListener('pointerdown', onPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [containerRef, isActive, onDismiss]);
+function getButtonLabel(
+  selectedOption: DropdownOption | undefined,
+  value: string,
+  placeholder?: string,
+): string {
+  if (selectedOption) return selectedOption.label;
+  if (placeholder && !value) return placeholder;
+  return '';
+}
+
+function getButtonTextColor(
+  fontWeight: 'normal' | 'semibold',
+  value: string,
+  selectedOption: DropdownOption | undefined,
+): string {
+  if (fontWeight === 'normal') return colors.dropdownTextPlaceholder;
+  if (value && selectedOption) return colors.dropdownTextValue;
+  return colors.dropdownTextPlaceholder;
 }
 
 export default Dropdown;
