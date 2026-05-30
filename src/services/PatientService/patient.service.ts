@@ -31,6 +31,14 @@ const noteToForm = (note: string) => {
   return trimmed === '' || trimmed === EMPTY_NOTE ? '' : trimmed;
 };
 
+export const tagsToForm = (tags: string[]) => tags.join(', ');
+
+export const tagsFromForm = (tags: string) =>
+  tags
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+
 export const getPatients = async () => {
   const { data } = await api.get<Patient[]>('/data');
   return data;
@@ -55,6 +63,8 @@ export const EditPatientForm = (
     bloodType: patient.bloodType,
     diagnosis: isEn ? patient.diagnosis_en : patient.diagnosis_tr,
     note: noteToForm(isEn ? patient.note_en : patient.note_tr),
+    tags: tagsToForm(patient.tags),
+    notes: patient.notes?.trim() ?? '',
     isInsured: patient.isInsured,
     isFollowUp: patient.isFollowUp,
     isVaccinated: patient.isVaccinated,
@@ -91,7 +101,7 @@ export const SavePatientForm = (
     isInsured: form.isInsured,
     isFollowUp: form.isFollowUp,
     isVaccinated: form.isVaccinated,
-    tags: existing?.tags ?? [],
-    notes: existing?.notes ?? null,
+    tags: tagsFromForm(form.tags),
+    notes: form.notes.trim() || null,
   };
 };

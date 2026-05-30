@@ -224,6 +224,14 @@ const PatientForm = ({
             options={bloodTypeOptions}
             onChange={(value) => updateField('bloodType', value)}
           />
+
+          <Input
+            label={t('tags')}
+            placeholder={t('patientFormTagsPlaceholder')}
+            explanation={t('patientFormTagsExplanation')}
+            value={form.tags}
+            onChange={(value) => updateField('tags', value)}
+          />
         </div>
 
         <div className="border-t border-slate-100 pt-5">
@@ -282,6 +290,14 @@ const PatientForm = ({
             rows={2}
             value={form.note}
             onChange={(value) => updateField('note', value)}
+          />
+
+          <Textarea
+            label={t('notes')}
+            placeholder={t('patientFormNotesPlaceholder')}
+            rows={2}
+            value={form.notes}
+            onChange={(value) => updateField('notes', value)}
           />
         </div>
 

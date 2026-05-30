@@ -12,6 +12,8 @@ export type PatientFormState = {
   bloodType: string;
   diagnosis: string;
   note: string;
+  tags: string;
+  notes: string;
   isInsured: boolean;
   isFollowUp: boolean;
   isVaccinated: boolean;
@@ -32,6 +34,8 @@ export const createInitialPatientFormState = (): PatientFormState => {
     bloodType: '',
     diagnosis: '',
     note: '',
+    tags: '',
+    notes: '',
     isInsured: false,
     isFollowUp: false,
     isVaccinated: false,

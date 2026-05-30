@@ -2,7 +2,10 @@ import type { TFunction } from 'i18next';
 import type { ReactNode } from 'react';
 
 import type { Patient } from '../../../../types/patient.types';
-import { formatNoteForDisplay } from '../../../../services/PatientService/patient.service';
+import {
+  formatNoteForDisplay,
+  tagsToForm,
+} from '../../../../services/PatientService/patient.service';
 import { formatDate } from '../../../../utils/formatDate';
 import { formatBoolean } from '../../../../utils/patientStatus';
 
@@ -56,6 +59,15 @@ export const getPatientDetails = (
     {
       label: t('note'),
       value: formatNoteForDisplay(isEn ? patient.note_en : patient.note_tr),
+      multiline: true,
+    },
+    {
+      label: t('tags'),
+      value: patient.tags.length > 0 ? tagsToForm(patient.tags) : null,
+    },
+    {
+      label: t('notes'),
+      value: patient.notes?.trim() || null,
       multiline: true,
     },
   ];
