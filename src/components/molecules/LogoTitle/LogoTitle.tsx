@@ -7,28 +7,21 @@ const LogoTitle = () => {
 
   return (
     <h1
-      className="inline-flex flex-wrap items-baseline gap-x-1 sm:gap-x-1.5"
+      className="min-w-0 text-left text-lg leading-snug sm:text-xl lg:text-2xl"
       aria-label={t('appTitle')}
     >
       <span
-        className="text-xl font-bold tracking-tight sm:text-2xl"
+        className="block font-bold tracking-tight sm:inline"
         style={{ color: colors.buttonPrimary }}
       >
         {t('logoPrimary')}
-      </span>
-
+      </span>{' '}
       <span
-        className="text-xl font-medium tracking-tight sm:text-2xl"
+        className="block font-medium tracking-tight sm:inline"
         style={{ color: colors.buttonSecondary }}
       >
-        {t('logoSecondary')}
-      </span>
-
-      <span
-        className="text-xl font-semibold tracking-tight sm:text-2xl"
-        style={{ color: colors.buttonSecondary }}
-      >
-        {t('logoAccent')}
+        {t('logoSecondary')}{' '}
+        <span className="font-semibold">{t('logoAccent')}</span>
       </span>
     </h1>
   );

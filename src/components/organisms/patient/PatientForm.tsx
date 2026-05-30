@@ -2,12 +2,10 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Button from '../../atoms/Button/Button';
-import {
-  CheckBox,
-  DatePicker,
-  Input,
-  Textarea,
-} from '../../atoms/Input';
+import CheckBox from '../../atoms/Input/CheckBox';
+import DatePicker from '../../atoms/Input/DatePicker';
+import Input from '../../atoms/Input/Input';
+import Textarea from '../../atoms/Input/Textarea';
 import PopupModal from '../../atoms/Modal/PopupModal';
 import Dropdown from '../../molecules/Dropdown/Dropdown';
 import T from '../../atoms/Text/T';
