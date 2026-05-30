@@ -28,8 +28,18 @@ const LanguageSwitcher = () => {
     <div
       role="group"
       aria-label={t('languageSelection')}
-      className="inline-flex rounded-lg border border-slate-200 bg-slate-100/80 p-1"
+      className="relative inline-grid grid-cols-2 rounded-full border border-slate-200/80 bg-slate-100/90 p-1"
     >
+      <span
+        aria-hidden
+        className={clsx(
+          'pointer-events-none absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-full bg-white',
+          'shadow-[0_1px_2px_rgba(15,23,42,0.06),0_4px_12px_rgba(15,23,42,0.05)]',
+          'transition-transform duration-200 ease-out',
+          lang === 'en' && 'translate-x-full',
+        )}
+      />
+
       {languages.map((code) => {
         const isActive = lang === code;
         const labelKey =
@@ -42,10 +52,12 @@ const LanguageSwitcher = () => {
             aria-pressed={isActive}
             onClick={() => changeLanguage(code)}
             className={clsx(
-              'min-w-11 rounded-md px-3 py-1.5 text-xs font-semibold tracking-wide transition-all',
+              'relative z-10 min-w-[3.25rem] rounded-full px-4 py-2',
+              'text-xs font-bold tracking-wide transition-colors duration-200',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300/80 focus-visible:ring-offset-2',
               isActive
-                ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200/80'
-                : 'text-slate-500 hover:text-slate-700',
+                ? 'text-slate-900'
+                : 'text-slate-400 hover:text-slate-600',
             )}
           >
             {t(labelKey)}
