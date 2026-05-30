@@ -29,11 +29,27 @@ export default function Dashboard() {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [dateSort, setDateSort] = useState('old');
-  const [selectedPatient, setSelectedPatient] =
-    useState<Patient | null>(null);
+  const [selectedPatientId, setSelectedPatientId] =
+    useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingPatient, setEditingPatient] =
-    useState<Patient | null>(null);
+  const [editingPatientId, setEditingPatientId] =
+    useState<string | null>(null);
+
+  const selectedPatient = useMemo(
+    () =>
+      patients.find((patient) => patient.id === selectedPatientId) ??
+      null,
+    [patients, selectedPatientId],
+  );
+
+  const editingPatient = useMemo(
+    () =>
+      editingPatientId
+        ? (patients.find((patient) => patient.id === editingPatientId) ??
+          null)
+        : null,
+    [patients, editingPatientId],
+  );
 
   const dateSortOptions = useMemo(
     () => [
@@ -44,26 +60,26 @@ export default function Dashboard() {
   );
 
   const handlePatientClick = (patient: Patient) => {
-    setSelectedPatient(patient);
+    setSelectedPatientId(patient.id);
   };
 
   const handleCloseDetail = () => {
-    setSelectedPatient(null);
+    setSelectedPatientId(null);
   };
 
   const handleOpenAddForm = () => {
-    setEditingPatient(null);
+    setEditingPatientId(null);
     setIsFormOpen(true);
   };
 
   const handleOpenEditForm = (patient: Patient) => {
-    setEditingPatient(patient);
+    setEditingPatientId(patient.id);
     setIsFormOpen(true);
   };
 
   const handleCloseForm = () => {
     setIsFormOpen(false);
-    setEditingPatient(null);
+    setEditingPatientId(null);
   };
 
   const handleStatusChange = (value: string) => {
@@ -168,7 +184,7 @@ export default function Dashboard() {
       </div>
 
       <CenterModal
-        open={selectedPatient !== null}
+        open={selectedPatientId !== null}
         title={t('patientDetail')}
         onClose={handleCloseDetail}
       >
@@ -179,12 +195,12 @@ export default function Dashboard() {
 
       <CenterModal
         open={isFormOpen}
-        title={t(editingPatient ? 'editPatient' : 'newPatient')}
+        title={t(editingPatientId ? 'editPatient' : 'newPatient')}
         size="lg"
         onClose={handleCloseForm}
       >
         <PatientForm
-          key={editingPatient?.id ?? 'new'}
+          key={editingPatientId ?? 'new'}
           patient={editingPatient}
           showHeader={false}
           onCancel={handleCloseForm}
@@ -205,8 +221,8 @@ export default function Dashboard() {
           onAddPatient={handleOpenAddForm}
           onEditPatient={handleOpenEditForm}
           onDeletePatient={(patientId) => {
-            if (selectedPatient?.id === patientId) {
-              setSelectedPatient(null);
+            if (selectedPatientId === patientId) {
+              setSelectedPatientId(null);
             }
           }}
         />
@@ -255,8 +271,8 @@ export default function Dashboard() {
                   onPatientClick={handlePatientClick}
                   onEditPatient={handleOpenEditForm}
                   onDeletePatient={(patientId) => {
-                    if (selectedPatient?.id === patientId) {
-                      setSelectedPatient(null);
+                    if (selectedPatientId === patientId) {
+                      setSelectedPatientId(null);
                     }
                   }}
                 />
