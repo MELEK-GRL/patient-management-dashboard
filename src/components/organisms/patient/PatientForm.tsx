@@ -8,15 +8,13 @@ import {
   Input,
   Textarea,
 } from '../../atoms/Input';
-import Loading from '../../atoms/FeedBack/Loading';
 import PopupModal from '../../atoms/Modal/PopupModal';
 import Dropdown from '../../molecules/Dropdown/Dropdown';
 import T from '../../atoms/Text/T';
 import {
   isPatientFormValid,
-  mapFormToPatient,
-  mapPatientToForm,
-  savePatient,
+  SavePatientForm,
+  EditPatientForm,
 } from '../../../services/PatientService/patient.service';
 import { useDispatch } from 'react-redux';
 import { addPatient, updatePatient } from '../../../store/patient.store';
@@ -52,13 +50,11 @@ const PatientForm = ({
   const isEdit = Boolean(patient);
   const [form, setForm] = useState(() =>
     patient
-      ? mapPatientToForm(patient, i18n.language)
+      ? EditPatientForm(patient, i18n.language)
       : createInitialPatientFormState(),
   );
-  const [isSaving, setIsSaving] = useState(false);
   const [isValidationModalOpen, setIsValidationModalOpen] =
     useState(false);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const departmentOptions = useMemo(
@@ -104,37 +100,26 @@ const PatientForm = ({
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!isPatientFormValid(form)) {
       setIsValidationModalOpen(true);
       return;
     }
 
-    setIsSaving(true);
+    const savedPatient = SavePatientForm(
+      form,
+      patient ?? undefined,
+      i18n.language,
+    );
 
-    try {
-      const savedPatient = mapFormToPatient(
-        form,
-        patient ?? undefined,
-        i18n.language,
-      );
-
-      await savePatient(savedPatient);
-
-      if (isEdit) {
-        dispatch(updatePatient(savedPatient));
-      } else {
-        dispatch(addPatient(savedPatient));
-      }
-
-      setForm(createInitialPatientFormState());
-      setIsSuccessModalOpen(true);
-    } catch (error) {
-      console.error(error);
-      setIsErrorModalOpen(true);
-    } finally {
-      setIsSaving(false);
+    if (isEdit) {
+      dispatch(updatePatient(savedPatient));
+    } else {
+      dispatch(addPatient(savedPatient));
     }
+
+    setForm(createInitialPatientFormState());
+    setIsSuccessModalOpen(true);
   };
 
   const handleCloseSuccess = () => {
@@ -144,12 +129,6 @@ const PatientForm = ({
 
   return (
     <div className="relative w-full">
-      {isSaving && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/90">
-          <Loading />
-        </div>
-      )}
-
       {showHeader ? (
         <header className="mb-6">
           <T font="medium" className="text-2xl text-slate-900">
@@ -176,7 +155,6 @@ const PatientForm = ({
             required
             placeholder={t('patientFormFirstNamePlaceholder')}
             value={form.firstName}
-            disabled={isSaving}
             onChange={(value) => updateField('firstName', value)}
           />
 
@@ -185,7 +163,6 @@ const PatientForm = ({
             required
             placeholder={t('patientFormLastNamePlaceholder')}
             value={form.lastName}
-            disabled={isSaving}
             onChange={(value) => updateField('lastName', value)}
           />
 
@@ -193,7 +170,6 @@ const PatientForm = ({
             label={t('birthDate')}
             required
             value={form.birthDate}
-            disabled={isSaving}
             onChange={(value) => updateField('birthDate', value)}
           />
 
@@ -210,7 +186,6 @@ const PatientForm = ({
             label={t('appointmentDate')}
             required
             value={form.appointmentDate}
-            disabled={isSaving}
             onChange={(value) => updateField('appointmentDate', value)}
           />
 
@@ -240,7 +215,6 @@ const PatientForm = ({
             max={10}
             placeholder="0"
             value={form.score}
-            disabled={isSaving}
             onChange={(value) => updateField('score', value)}
           />
 
@@ -277,21 +251,18 @@ const PatientForm = ({
               text={t('insured')}
               required
               checked={form.isInsured}
-              disabled={isSaving}
               onChange={(checked) => updateField('isInsured', checked)}
             />
             <CheckBox
               text={t('followUp')}
               required
               checked={form.isFollowUp}
-              disabled={isSaving}
               onChange={(checked) => updateField('isFollowUp', checked)}
             />
             <CheckBox
               text={t('vaccinated')}
               required
               checked={form.isVaccinated}
-              disabled={isSaving}
               onChange={(checked) => updateField('isVaccinated', checked)}
             />
           </div>
@@ -304,7 +275,6 @@ const PatientForm = ({
             placeholder={t('patientFormDiagnosisPlaceholder')}
             rows={2}
             value={form.diagnosis}
-            disabled={isSaving}
             onChange={(value) => updateField('diagnosis', value)}
           />
 
@@ -313,7 +283,6 @@ const PatientForm = ({
             placeholder={t('patientFormNotePlaceholder')}
             rows={2}
             value={form.note}
-            disabled={isSaving}
             onChange={(value) => updateField('note', value)}
           />
         </div>
@@ -322,7 +291,6 @@ const PatientForm = ({
           <Button
             backgroundColor="cancel"
             className="min-w-28 px-6 sm:w-auto"
-            disabled={isSaving}
             onClick={onCancel}
           >
             {t('cancel')}
@@ -331,7 +299,6 @@ const PatientForm = ({
           <Button
             backgroundColor="primary"
             className="min-w-28 px-6 sm:w-auto"
-            disabled={isSaving}
             onClick={handleSave}
           >
             {t(isEdit ? 'update' : 'save')}
@@ -347,16 +314,6 @@ const PatientForm = ({
         rightButtonText={t('ok')}
         rightButtonVariant="primary"
         onRightButtonClick={() => setIsValidationModalOpen(false)}
-      />
-
-      <PopupModal
-        open={isErrorModalOpen}
-        onClose={() => setIsErrorModalOpen(false)}
-        status="error"
-        message={t('savePatientErrorMessage')}
-        rightButtonText={t('ok')}
-        rightButtonVariant="primary"
-        onRightButtonClick={() => setIsErrorModalOpen(false)}
       />
 
       <PopupModal

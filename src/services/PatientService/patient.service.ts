@@ -2,39 +2,41 @@ import api from '../api';
 import type { Patient } from '../../types/patient.types';
 import type { PatientFormState } from '../../types/patientForm.types';
 
-export const getPatients = async () => {
-  const response = await api.get<Patient[]>('/data');
-  return response.data;
-};
+const EMPTY_NOTE = '-';
 
-export const savePatient = async (patient: Patient) => {
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  return patient;
-};
+const REQUIRED_FIELDS = [
+  'firstName',
+  'lastName',
+  'birthDate',
+  'department',
+  'appointmentDate',
+  'status',
+  'priority',
+  'score',
+  'bloodType',
+  'diagnosis',
+] as const;
 
-const toDate = (date: string) => date.split('T')[0] ?? date;
+const toDate = (date: string) => date.split('T')[0];
 
 const splitName = (fullName: string) => {
   const parts = fullName.trim().split(/\s+/);
-  return {
-    firstName: parts[0] ?? '',
-    lastName: parts.slice(1).join(' '),
-  };
+  return { firstName: parts[0], lastName: parts.slice(1).join(' ') };
 };
 
-const EMPTY_NOTE = '-';
+export const formatNoteForDisplay = (note: string) => note.trim() || EMPTY_NOTE;
 
-const formatNoteForSave = (note: string) => note.trim() || EMPTY_NOTE;
-
-const formatNoteForForm = (note: string) => {
+const noteToForm = (note: string) => {
   const trimmed = note.trim();
-  return !trimmed || trimmed === EMPTY_NOTE ? '' : trimmed;
+  return trimmed === '' || trimmed === EMPTY_NOTE ? '' : trimmed;
 };
 
-export const formatNoteForDisplay = (note: string) =>
-  note.trim() || EMPTY_NOTE;
+export const getPatients = async () => {
+  const { data } = await api.get<Patient[]>('/data');
+  return data;
+};
 
-export const mapPatientToForm = (
+export const EditPatientForm = (
   patient: Patient,
   language = 'tr',
 ): PatientFormState => {
@@ -52,7 +54,7 @@ export const mapPatientToForm = (
     score: String(patient.score),
     bloodType: patient.bloodType,
     diagnosis: isEn ? patient.diagnosis_en : patient.diagnosis_tr,
-    note: formatNoteForForm(isEn ? patient.note_en : patient.note_tr),
+    note: noteToForm(isEn ? patient.note_en : patient.note_tr),
     isInsured: patient.isInsured,
     isFollowUp: patient.isFollowUp,
     isVaccinated: patient.isVaccinated,
@@ -60,25 +62,16 @@ export const mapPatientToForm = (
 };
 
 export const isPatientFormValid = (form: PatientFormState) =>
-  form.firstName.trim() !== '' &&
-  form.lastName.trim() !== '' &&
-  form.birthDate !== '' &&
-  form.department !== '' &&
-  form.appointmentDate !== '' &&
-  form.status !== '' &&
-  form.priority !== '' &&
-  form.score !== '' &&
-  form.bloodType !== '' &&
-  form.diagnosis.trim() !== '';
+  REQUIRED_FIELDS.every((field) => form[field].trim() !== '');
 
-export const mapFormToPatient = (
+export const SavePatientForm = (
   form: PatientFormState,
   existing?: Patient,
   language = 'tr',
 ): Patient => {
-  const note = formatNoteForSave(form.note);
-  const diagnosis = form.diagnosis.trim();
   const isEn = language === 'en';
+  const note = formatNoteForDisplay(form.note);
+  const diagnosis = form.diagnosis.trim();
 
   return {
     id: existing?.id ?? `pat-${Date.now()}`,
