@@ -1,0 +1,83 @@
+import clsx from 'clsx';
+
+import T from '../Text/T';
+import { colors } from '../../../styles/colors';
+import { formatIdControl } from '../../../utils/formatDate';
+
+export type TextareaProps = {
+  label?: string;
+  explanation?: string;
+  required?: boolean;
+  className?: string;
+  id?: string;
+  rows?: number;
+  value?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  onChange?: (value: string) => void;
+};
+
+const Textarea = ({
+  label,
+  explanation,
+  required,
+  className,
+  id,
+  rows = 3,
+  value,
+  placeholder,
+  disabled,
+  onChange,
+}: TextareaProps) => {
+  const textareaId = formatIdControl(label, id);
+
+  return (
+    <div className={clsx('flex w-full flex-col gap-1.5', className)}>
+      {label && (
+        <label htmlFor={textareaId} className="flex items-center gap-1">
+          <T
+            as="span"
+            font="small"
+            className="text-sm font-bold tracking-wide"
+            style={{ color: colors.formLabel }}
+          >
+            {label}
+          </T>
+          {required && (
+            <span
+              className="text-sm font-bold"
+              style={{ color: colors.formRequired }}
+            >
+              *
+            </span>
+          )}
+        </label>
+      )}
+
+      <textarea
+        id={textareaId}
+        rows={rows}
+        value={value}
+        placeholder={placeholder}
+        disabled={disabled}
+        onChange={(e) => onChange?.(e.target.value)}
+        className="min-h-22 w-full resize-y rounded-lg border px-4 py-2.5 text-sm font-semibold outline-none placeholder:font-medium focus:ring-2 disabled:cursor-not-allowed"
+        style={{
+          borderColor: colors.fieldBorder,
+          backgroundColor: disabled
+            ? colors.fieldDisabledBackground
+            : colors.fieldBackground,
+          color: disabled ? colors.fieldDisabledText : colors.fieldText,
+        }}
+      />
+
+      {explanation && (
+        <T font="xsmall" style={{ color: colors.formHint }}>
+          {explanation}
+        </T>
+      )}
+    </div>
+  );
+};
+
+export default Textarea;
