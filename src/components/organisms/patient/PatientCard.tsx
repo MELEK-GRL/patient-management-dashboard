@@ -10,7 +10,7 @@ import { deletePatient } from '../../../store/patient.store';
 import type { Patient } from '../../../types/patient.types';
 import { colors } from '../../../styles/colors';
 import { formatDate } from '../../../utils/formatDate';
-import { formatPriority } from '../../../utils/patientSatus';
+import { formatPriority } from '../../../utils/patientStatus';
 
 interface PatientCardProps {
   patient: Patient;

@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next';
 import { describe, it, expect } from 'vitest';
-import { formatBoolean, formatPriority } from '../patientSatus';
+import { formatBoolean, formatPriority } from '../patientStatus';
 
 const t = ((key: string) => key) as TFunction;
 

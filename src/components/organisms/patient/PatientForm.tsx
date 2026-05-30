@@ -22,7 +22,7 @@ import {
   type PatientFormState,
 } from '../../../types/patientForm.types';
 import { colors } from '../../../styles/colors';
-import { formatPriority } from '../../../utils/patientSatus';
+import { formatPriority } from '../../../utils/patientStatus';
 import {
   bloodTypeValues,
   departmentValues,

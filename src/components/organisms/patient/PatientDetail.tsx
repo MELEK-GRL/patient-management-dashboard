@@ -5,7 +5,7 @@ import Badge from '../../atoms/Badge/Badge';
 import T from '../../atoms/Text/T';
 import type { Patient } from '../../../types/patient.types';
 import { getPatientDetails } from './PatientData/PatientDetailData';
-import { formatPriority } from '../../../utils/patientSatus';
+import { formatPriority } from '../../../utils/patientStatus';
 
 interface PatientDetailProps {
   patient: Patient;

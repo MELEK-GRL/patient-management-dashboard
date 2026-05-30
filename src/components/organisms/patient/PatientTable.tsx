@@ -14,7 +14,7 @@ import T from '../../atoms/Text/T';
 import { deletePatient } from '../../../store/patient.store';
 import type { Patient } from '../../../types/patient.types';
 import { formatDate } from '../../../utils/formatDate';
-import { formatPriority } from '../../../utils/patientSatus';
+import { formatPriority } from '../../../utils/patientStatus';
 
 interface PatientTableProps {
   patients: Patient[];

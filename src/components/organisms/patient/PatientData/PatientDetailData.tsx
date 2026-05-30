@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import type { Patient } from '../../../../types/patient.types';
 import { formatNoteForDisplay } from '../../../../services/PatientService/patient.service';
 import { formatDate } from '../../../../utils/formatDate';
-import { formatBoolean } from '../../../../utils/patientSatus';
+import { formatBoolean } from '../../../../utils/patientStatus';
 
 export type PatientDetailRow = {
   label: string;
