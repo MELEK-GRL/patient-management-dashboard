@@ -46,7 +46,6 @@ export default function Dashboard() {
 
     try {
       const data = await getPatients();
-      console.log("--->data",JSON.stringify(data,null,2));
       dispatch(setPatients(data));
     } catch (error) {
       console.error(error);
