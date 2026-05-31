@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactElement } from 'react';
+import { useCallback, useMemo, useState, type ReactElement } from 'react';
 import clsx from 'clsx';
 import {
   HiOutlineDotsVertical,
@@ -67,10 +67,10 @@ const PatientCard = ({
     onEditPatient?.(patient);
   };
 
-  const handleOpenDelete = () => {
+  const handleOpenDelete = useCallback(() => {
     setIsMenuOpen(false);
     setIsDeleteOpen(true);
-  };
+  }, []);
 
   const handleCloseDelete = () => {
     setIsDeleteOpen(false);
@@ -106,7 +106,7 @@ const PatientCard = ({
   const rightActionSwipeable = useMemo(
     () => (
       <TrailingActions>
-        <SwipeAction destructive onClick={() => setIsDeleteOpen(true)}>
+        <SwipeAction onClick={handleOpenDelete}>
           <div
             className="flex h-full w-full min-w-20 items-center justify-end gap-2 px-4 text-white"
             style={{ backgroundColor: colors.buttonDanger }}
@@ -120,7 +120,7 @@ const PatientCard = ({
         </SwipeAction>
       </TrailingActions>
     ),
-    [t],
+    [handleOpenDelete, t],
   );
 
   const patientInfo = useMemo(
