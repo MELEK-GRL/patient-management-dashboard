@@ -15,6 +15,7 @@ import PatientForm from '../../components/organisms/patient/PatientForm';
 import PatientTable from '../../components/organisms/patient/PatientTable';
 import Pagination from '../../components/molecules/Pagination/Pagination';
 import { usePagination } from '../../components/molecules/Pagination/usePagination';
+import { SwipeableList, Type } from 'react-swipeable-list';
 import { getPatients } from '../../services/PatientService/patient.service';
 import { setPatients } from '../../store/patient.store';
 import type { Patient } from '../../types/patient.types';
@@ -301,11 +302,18 @@ export default function Dashboard() {
             <EmptyState />
           ) : (
             <>
-              <div className="space-y-2.5">
+              <SwipeableList
+                type={Type.IOS}
+                fullSwipe={false}
+                scrollStartThreshold={10}
+                swipeStartThreshold={10}
+                className="flex flex-col gap-2.5"
+              >
                 {paginatedItems.map((patient) => (
                   <PatientCard
                     key={patient.id}
                     patient={patient}
+                    enableSwipe
                     onPatientClick={handlePatientClick}
                     onEditPatient={handleOpenEditForm}
                     onDeletePatient={(patientId) => {
@@ -315,7 +323,7 @@ export default function Dashboard() {
                     }}
                   />
                 ))}
-              </div>
+              </SwipeableList>
 
               {showPagination && (
                 <Pagination

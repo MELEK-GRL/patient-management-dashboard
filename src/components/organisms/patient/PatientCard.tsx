@@ -1,8 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactElement } from 'react';
 import clsx from 'clsx';
 import { HiOutlineDotsVertical } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import {
+  LeadingActions,
+  SwipeAction,
+  SwipeableListItem,
+  TrailingActions,
+} from 'react-swipeable-list';
 import Badge from '../../atoms/Badge/Badge';
 import PopupModal from '../../atoms/Modal/PopupModal';
 import T from '../../atoms/Text/T';
@@ -14,6 +20,7 @@ import { formatPriority } from '../../../utils/patientStatus';
 
 interface PatientCardProps {
   patient: Patient;
+  enableSwipe?: boolean;
   onPatientClick?: (patient: Patient) => void;
   onDeletePatient?: (patientId: string) => void;
   onEditPatient?: (patient: Patient) => void;
@@ -32,12 +39,16 @@ const getPriorityBorderColor = (priority: string) =>
 const CARD_LAYOUT =
   'relative rounded-lg border border-slate-200 border-l-[3px] bg-white shadow-sm transition-shadow hover:shadow-md';
 
+const SWIPE_ACTION_CLASS =
+  'flex h-full min-w-[72px] items-center justify-center px-4 font-medium text-white';
+
 const PatientCard = ({
   patient,
+  enableSwipe = false,
   onPatientClick,
   onDeletePatient,
   onEditPatient,
-}: PatientCardProps) => {
+}: PatientCardProps): ReactElement => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,6 +81,42 @@ const PatientCard = ({
     setIsDeleteOpen(false);
     setIsDeleteSuccessOpen(true);
   };
+
+  const leftActionSwipeable = useMemo(
+    () => (
+      <LeadingActions>
+        <SwipeAction onClick={() => onEditPatient?.(patient)}>
+          <T
+            font="small"
+            as="span"
+            className={SWIPE_ACTION_CLASS}
+            style={{ backgroundColor: colors.buttonPrimary }}
+          >
+            {t('edit')}
+          </T>
+        </SwipeAction>
+      </LeadingActions>
+    ),
+    [onEditPatient, patient, t],
+  );
+
+  const rightActionSwipeable = useMemo(
+    () => (
+      <TrailingActions>
+        <SwipeAction onClick={() => setIsDeleteOpen(true)}>
+          <T
+            font="small"
+            as="span"
+            className={SWIPE_ACTION_CLASS}
+            style={{ backgroundColor: colors.buttonDanger }}
+          >
+            {t('delete')}
+          </T>
+        </SwipeAction>
+      </TrailingActions>
+    ),
+    [t],
+  );
 
   const patientInfo = useMemo(
     () => [
@@ -105,57 +152,8 @@ const PatientCard = ({
     [patient, t],
   );
 
-  return (
+  const modals = (
     <>
-      <article
-        onClick={() => onPatientClick?.(patient)}
-        className={clsx(CARD_LAYOUT, onPatientClick && 'cursor-pointer')}
-        style={{ borderLeftColor: getPriorityBorderColor(patient.priority) }}
-      >
-        <button
-          type="button"
-          aria-label={t('actions')}
-          onClick={(event) => {
-            event.stopPropagation();
-            setIsMenuOpen(true);
-          }}
-          className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center text-slate-500"
-        >
-          <HiOutlineDotsVertical className="h-5 w-5" />
-        </button>
-
-        <div className="p-4 pr-12">
-          <div className="mb-4 flex items-start justify-between gap-3">
-            <div className="min-w-0 [&_p]:m-0">
-              <T font="semiBold">{patient.fullName}</T>
-
-              <div className="mt-1 text-slate-500">
-                <T font="xsmall">
-                  {patient.department}
-                </T>
-              </div>
-            </div>
-
-            <T font="xsmall">{appointmentLabel}</T>
-          </div>
-
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
-            {patientInfo.map((item) => (
-              <div
-                key={item.label}
-                className="flex min-w-0 items-center gap-2"
-              >
-                <span className="shrink-0 text-xs text-slate-500">
-                  {item.label}
-                </span>
-
-                {item.value}
-              </div>
-            ))}
-          </div>
-        </div>
-      </article>
-
       <PopupModal
         open={isMenuOpen}
         onClose={handleCloseMenu}
@@ -188,6 +186,81 @@ const PatientCard = ({
         rightButtonVariant="primary"
         onRightButtonClick={() => setIsDeleteSuccessOpen(false)}
       />
+    </>
+  );
+
+  const cardContent = (
+    <article
+      onClick={() => onPatientClick?.(patient)}
+      className={clsx(
+        CARD_LAYOUT,
+        'w-full min-w-0',
+        onPatientClick && 'cursor-pointer',
+      )}
+      style={{ borderLeftColor: getPriorityBorderColor(patient.priority) }}
+    >
+      <button
+        type="button"
+        aria-label={t('actions')}
+        onClick={(event) => {
+          event.stopPropagation();
+          setIsMenuOpen(true);
+        }}
+        className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center text-slate-500"
+      >
+        <HiOutlineDotsVertical className="h-5 w-5" />
+      </button>
+
+      <div className="p-4 pr-12">
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <div className="min-w-0 [&_p]:m-0">
+            <T font="semiBold">{patient.fullName}</T>
+
+            <div className="mt-1 text-slate-500">
+              <T font="xsmall">{patient.department}</T>
+            </div>
+          </div>
+
+          <T font="xsmall">{appointmentLabel}</T>
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
+          {patientInfo.map((item) => (
+            <div
+              key={item.label}
+              className="flex min-w-0 items-center gap-2"
+            >
+              <T font="xsmall" as="span" className="shrink-0 text-slate-500">
+                {item.label}
+              </T>
+
+              {item.value}
+            </div>
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+
+  if (enableSwipe) {
+    return (
+      <SwipeableListItem
+        leadingActions={leftActionSwipeable}
+        trailingActions={rightActionSwipeable}
+        scrollStartThreshold={10}
+        swipeStartThreshold={10}
+        threshold={0.35}
+      >
+        {cardContent}
+        {modals}
+      </SwipeableListItem>
+    );
+  }
+
+  return (
+    <>
+      {cardContent}
+      {modals}
     </>
   );
 };

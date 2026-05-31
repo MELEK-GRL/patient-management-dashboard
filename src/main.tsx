@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 
 import App from './App';
 import './index.css';
+import 'react-swipeable-list/dist/styles.css';
 import { store } from './store/store';
 
 createRoot(document.getElementById('root')!).render(

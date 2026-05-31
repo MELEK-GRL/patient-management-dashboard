@@ -34,4 +34,15 @@
   .scrollbar-themed::-webkit-scrollbar-thumb:hover {
     background: #2563eb;
   }
+
+  .swipeable-list {
+    height: auto;
+    overflow-y: visible;
+  }
+
+  .swipeable-list-item__content > *:first-child {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+  }
 }
