@@ -130,7 +130,7 @@ export default function Dashboard() {
     ].sort();
 
     return [
-      { value: '', label: t('select') },
+      { value: '', label: t('all') },
       ...statuses.map((item) => ({
         value: item,
         label: item,
@@ -186,7 +186,6 @@ export default function Dashboard() {
           value={status}
           options={statusOptions}
           onChange={handleStatusChange}
-          placeholder={t('select')}
           fontWeight="normal"
           className="lg:w-44"
         />
@@ -246,25 +245,30 @@ export default function Dashboard() {
       </div>
 
       <div className="relative md:hidden">
-        <div className="mb-4 flex items-center justify-between">
-          <T font="medium" className="text-2xl">
+        <div className="mb-4 flex flex-col gap-2.5">
+          <T font="medium" className="text-lg text-slate-900">
             {t('patientList')}
           </T>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-1.5">
-              <T font="small" className="text-slate-500">
+
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 whitespace-nowrap rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1">
+              <T font="xsmall" className="text-slate-500">
                 {t('patientCount')}
               </T>
 
               <T
-                font="small"
-                className="tabular-nums font-medium text-slate-800"
+                font="xsmall"
+                className="tabular-nums font-semibold text-slate-800"
               >
                 {filteredPatients.length}
               </T>
             </div>
 
-            <Button backgroundColor="primary" onClick={handleOpenAddForm}>
+            <Button
+              backgroundColor="primary"
+              onClick={handleOpenAddForm}
+              className="shrink-0 px-3 py-1.5 text-xs"
+            >
               {t('addPatient')}
             </Button>
           </div>

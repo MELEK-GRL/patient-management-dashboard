@@ -79,6 +79,7 @@ const PatientCard = ({
           <Badge
             label={patient.status}
             status={patient.status}
+            size="sm"
           />
         ),
       },
@@ -88,6 +89,7 @@ const PatientCard = ({
           <Badge
             label={formatPriority(patient.priority, t)}
             status={patient.priority}
+            size="sm"
           />
         ),
       },
@@ -137,13 +139,13 @@ const PatientCard = ({
             <T font="xsmall">{appointmentLabel}</T>
           </div>
 
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
             {patientInfo.map((item) => (
               <div
                 key={item.label}
-                className="flex items-center gap-2"
+                className="flex min-w-0 items-center gap-2"
               >
-                <span className="text-xs text-slate-500">
+                <span className="shrink-0 text-xs text-slate-500">
                   {item.label}
                 </span>
 

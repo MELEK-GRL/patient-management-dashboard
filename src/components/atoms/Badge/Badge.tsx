@@ -1,8 +1,11 @@
+import clsx from 'clsx';
+
 import { colors } from '../../../styles/colors';
 
 interface BadgeProps {
   label: string;
   status?: string;
+  size?: 'md' | 'sm';
 }
 
 type BadgeStyle = {
@@ -19,8 +22,11 @@ type BadgeVariant =
   | 'urgent'
   | 'normal';
 
-const BADGE_LAYOUT =
+const BADGE_LAYOUT_MD =
   'inline-flex w-[5.5rem] min-w-[5.5rem] items-center justify-center rounded-md px-2 py-1.5 text-center text-xs font-medium';
+
+const BADGE_LAYOUT_SM =
+  'inline-flex items-center justify-center rounded px-1.5 py-0.5 text-center text-[11px] font-medium leading-tight';
 
 const insetRing = (ring: string): string =>
   `inset 0 0 0 1px ${ring}`;
@@ -75,12 +81,15 @@ const defaultTone: BadgeStyle = {
   boxShadow: insetRing(colors.badgeDefaultRing),
 };
 
-const Badge = ({ label, status }: BadgeProps) => {
+const Badge = ({ label, status, size = 'md' }: BadgeProps) => {
   const variant = badgeVariantByValue[status ?? label];
   const tone = variant ? badgeTones[variant] : defaultTone;
 
   return (
-    <span className={BADGE_LAYOUT} style={tone}>
+    <span
+      className={clsx(size === 'sm' ? BADGE_LAYOUT_SM : BADGE_LAYOUT_MD)}
+      style={tone}
+    >
       {label}
     </span>
   );
