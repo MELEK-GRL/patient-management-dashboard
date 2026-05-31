@@ -313,7 +313,7 @@ export default function Dashboard() {
                   <PatientCard
                     key={patient.id}
                     patient={patient}
-                    enableSwipe
+                    slideSwipeable
                     onPatientClick={handlePatientClick}
                     onEditPatient={handleOpenEditForm}
                     onDeletePatient={(patientId) => {

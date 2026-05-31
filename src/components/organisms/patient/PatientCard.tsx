@@ -20,7 +20,7 @@ import { formatPriority } from '../../../utils/patientStatus';
 
 interface PatientCardProps {
   patient: Patient;
-  enableSwipe?: boolean;
+  slideSwipeable?: boolean;
   onPatientClick?: (patient: Patient) => void;
   onDeletePatient?: (patientId: string) => void;
   onEditPatient?: (patient: Patient) => void;
@@ -39,12 +39,9 @@ const getPriorityBorderColor = (priority: string) =>
 const CARD_LAYOUT =
   'relative rounded-lg border border-slate-200 border-l-[3px] bg-white shadow-sm transition-shadow hover:shadow-md';
 
-const SWIPE_ACTION_CLASS =
-  'flex h-full min-w-[72px] items-center justify-center px-4 font-medium text-white';
-
 const PatientCard = ({
   patient,
-  enableSwipe = false,
+  slideSwipeable = false,
   onPatientClick,
   onDeletePatient,
   onEditPatient,
@@ -86,14 +83,7 @@ const PatientCard = ({
     () => (
       <LeadingActions>
         <SwipeAction onClick={() => onEditPatient?.(patient)}>
-          <T
-            font="small"
-            as="span"
-            className={SWIPE_ACTION_CLASS}
-            style={{ backgroundColor: colors.buttonPrimary }}
-          >
-            {t('edit')}
-          </T>
+          <div className="h-full w-16" aria-label={t('edit')} />
         </SwipeAction>
       </LeadingActions>
     ),
@@ -104,14 +94,7 @@ const PatientCard = ({
     () => (
       <TrailingActions>
         <SwipeAction onClick={() => setIsDeleteOpen(true)}>
-          <T
-            font="small"
-            as="span"
-            className={SWIPE_ACTION_CLASS}
-            style={{ backgroundColor: colors.buttonDanger }}
-          >
-            {t('delete')}
-          </T>
+          <div className="h-full w-16" aria-label={t('delete')} />
         </SwipeAction>
       </TrailingActions>
     ),
@@ -242,7 +225,7 @@ const PatientCard = ({
     </article>
   );
 
-  if (enableSwipe) {
+  if (slideSwipeable) {
     return (
       <SwipeableListItem
         leadingActions={leftActionSwipeable}
