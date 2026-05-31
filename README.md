@@ -63,3 +63,7 @@ Vercel deployment link will be shared here.
 ## Notes
 
 This project was developed as a technical case study. API data is fetched remotely, while create, update and delete operations are managed locally through Redux state.
+
+### Language Support
+
+The application supports Turkish and English UI translations. Interface texts are translated, while patient-related data (e.g. names, departments, and status values) is displayed as received from the API.
