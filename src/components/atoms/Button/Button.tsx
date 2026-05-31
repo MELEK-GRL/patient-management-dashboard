@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { type ReactNode } from 'react';
 import clsx from 'clsx';
 
+import ActivityIndicator from '../FeedBack/ActivityIndicator';
 import { colors } from '../../../styles/colors';
 import { fonts } from '../../../styles/typography';
 
@@ -12,6 +13,7 @@ interface ButtonProps {
   backgroundColor?: ButtonVariant;
   onClick?: () => void;
   disabled?: boolean;
+  loading?: boolean;
   className?: string;
 }
 
@@ -37,22 +39,31 @@ const Button = ({
   backgroundColor = 'primary',
   onClick,
   disabled,
+  loading = false,
   className,
 }: ButtonProps) => {
+  const isDisabled = disabled || loading;
+
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={disabled}
+      disabled={isDisabled}
+      aria-busy={loading}
       style={buttonStyles[backgroundColor]}
       className={clsx(
         BUTTON_LAYOUT,
+        'inline-flex items-center justify-center',
         fonts.semiBold,
-        disabled && 'cursor-not-allowed opacity-60',
+        isDisabled && 'cursor-not-allowed opacity-60',
         className,
       )}
     >
-      {children}
+      {loading ? (
+        <ActivityIndicator size={18} color={colors.buttonText} />
+      ) : (
+        children
+      )}
     </button>
   );
 };

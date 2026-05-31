@@ -54,6 +54,7 @@ const PatientForm = ({
   const [isValidationModalOpen, setIsValidationModalOpen] =
     useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isSave, setIsSave] = useState(false);
 
   const departmentOptions = useMemo(
     () =>
@@ -98,11 +99,17 @@ const PatientForm = ({
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = () => {
-    if (!isPatientFormValid(form)) {
-      setIsValidationModalOpen(true);
+  const handleSave = async () => {
+    if (!isPatientFormValid(form) || isSave) {
+      if (!isPatientFormValid(form)) {
+        setIsValidationModalOpen(true);
+      }
       return;
     }
+
+    setIsSave(true);
+
+    await new Promise((resolve) => window.setTimeout(resolve, 500));
 
     const savedPatient = SavePatientForm(
       form,
@@ -117,6 +124,7 @@ const PatientForm = ({
     }
 
     setForm(createInitialPatientFormState());
+    setIsSave(false);
     setIsSuccessModalOpen(true);
   };
 
@@ -301,6 +309,7 @@ const PatientForm = ({
           <Button
             backgroundColor="cancel"
             className="min-w-28 px-6 sm:w-auto"
+            disabled={isSave}
             onClick={onCancel}
           >
             {t('cancel')}
@@ -310,6 +319,7 @@ const PatientForm = ({
             backgroundColor="primary"
             className="min-w-28 px-6 sm:w-auto"
             disabled={!isPatientFormValid(form)}
+            loading={isSave}
             onClick={handleSave}
           >
             {t(isEdit ? 'update' : 'save')}
