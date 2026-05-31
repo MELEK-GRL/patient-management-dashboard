@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { colors } from '../../../styles/colors';
 import { fonts } from '../../../styles/typography';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'cancel' | 'danger';
+export type ButtonVariant = 'primary' | 'cancel' | 'danger';
 
 interface ButtonProps {
   children: ReactNode;
@@ -20,10 +20,6 @@ const BUTTON_LAYOUT = 'rounded-md px-4 py-2';
 const buttonStyles: Record<ButtonVariant, CSSProperties> = {
   primary: {
     backgroundColor: colors.buttonPrimary,
-    color: colors.buttonText,
-  },
-  secondary: {
-    backgroundColor: colors.buttonSecondary,
     color: colors.buttonText,
   },
   cancel: {

@@ -18,7 +18,6 @@ interface PopupModalProps {
   open: boolean;
   onClose?: () => void;
   status?: PopupModalStatus;
-  title?: string;
   message?: string;
   leftButtonText?: string;
   rightButtonText?: string;
@@ -26,7 +25,6 @@ interface PopupModalProps {
   onRightButtonClick?: () => void;
   leftButtonVariant?: ButtonVariant;
   rightButtonVariant?: ButtonVariant;
-  buttonDirection?: 'row' | 'column';
 }
 
 const statusConfig: Record<
@@ -59,7 +57,6 @@ const PopupModal = ({
   open,
   onClose,
   status = 'info',
-  title,
   message,
   leftButtonText,
   rightButtonText,
@@ -67,7 +64,6 @@ const PopupModal = ({
   onRightButtonClick,
   leftButtonVariant = 'cancel',
   rightButtonVariant = 'danger',
-  buttonDirection = 'row',
 }: PopupModalProps) => {
   useEffect(() => {
     if (!open) return;
@@ -124,29 +120,14 @@ const PopupModal = ({
           ✕
         </button>
 
-        {title ? (
-          <h2 className="mb-5 pr-10 text-lg font-semibold text-slate-900">
-            {title}
-          </h2>
-        ) : null}
-
         {message ? (
-          <T
-            className={clsx(
-              'block text-center text-slate-600',
-              !title && 'mt-1',
-            )}
-          >
-            {message}
-          </T>
+          <T className="mt-1 block text-center text-slate-600">{message}</T>
         ) : null}
 
         {hasButtons ? (
           <div
             className={clsx(
-              buttonDirection === 'column'
-                ? 'flex flex-col items-center gap-3'
-                : 'flex justify-center gap-3',
+              'flex justify-center gap-3',
               message ? 'mt-6' : 'mt-8',
             )}
           >

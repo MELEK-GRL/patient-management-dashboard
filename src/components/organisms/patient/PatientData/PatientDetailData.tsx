@@ -12,7 +12,7 @@ import { formatBoolean } from '../../../../utils/patientStatus';
 export type PatientDetailRow = {
   label: string;
   value: ReactNode;
-  multiline?: boolean;
+  lineLength?: boolean;
 };
 
 export const getPatientDetails = (
@@ -54,12 +54,12 @@ export const getPatientDetails = (
     {
       label: t('diagnosis'),
       value: isEn ? patient.diagnosis_en : patient.diagnosis_tr,
-      multiline: true,
+      lineLength: true,
     },
     {
       label: t('note'),
       value: formatNoteForDisplay(isEn ? patient.note_en : patient.note_tr),
-      multiline: true,
+      lineLength: true,
     },
     {
       label: t('tags'),
@@ -68,7 +68,7 @@ export const getPatientDetails = (
     {
       label: t('notes'),
       value: patient.notes?.trim() || null,
-      multiline: true,
+      lineLength: true,
     },
   ];
 };

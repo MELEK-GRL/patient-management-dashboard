@@ -143,7 +143,7 @@ const PatientTable = ({
                     )}
                   >
                     <td className="py-5 pl-5">
-                      <T font="semiBold">{patient.fullName}</T>
+                      <T>{patient.fullName}</T>
                     </td>
 
                     <td className="py-5 pl-4">
@@ -151,7 +151,7 @@ const PatientTable = ({
                     </td>
 
                     <td className="py-5 pl-4">
-                      <T font="xsmall">{appointmentLabel}</T>
+                      <T>{appointmentLabel}</T>
                     </td>
 
                     <td className="align-middle py-5 pl-4">
@@ -169,11 +169,11 @@ const PatientTable = ({
                     </td>
 
                     <td className="py-5 pl-4">
-                      <T font="semiBold">{patient.bloodType}</T>
+                      <T>{patient.bloodType}</T>
                     </td>
 
                     <td className="py-5 pl-4">
-                      <T font="semiBold">{patient.score}</T>
+                      <T>{patient.score}</T>
                     </td>
 
                     <td className="py-5 pr-2 text-right">

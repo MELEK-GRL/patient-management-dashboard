@@ -88,7 +88,6 @@ export const SavePatientForm = (
     fullName: `${form.firstName.trim()} ${form.lastName.trim()}`,
     birthDate: form.birthDate,
     appointmentDate: `${form.appointmentDate}T00:00:00`,
-    createdAt: existing?.createdAt ?? new Date().toISOString(),
     department: form.department,
     status: form.status,
     priority: form.priority,

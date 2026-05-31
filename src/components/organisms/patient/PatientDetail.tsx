@@ -20,7 +20,7 @@ const PanelSection = ({
 }) => (
   <div>
     <div className="border-b border-slate-100 bg-slate-50 px-4 py-2.5">
-      <T font="xsmall" className="font-semibold text-slate-600">
+      <T font="small" className="font-semibold text-slate-600">
         {title}
       </T>
     </div>
@@ -32,32 +32,30 @@ const PanelSection = ({
 const DataRow = ({
   label,
   value,
-  multiline = false,
+  lineLength = false,
 }: {
   label: string;
   value: ReactNode;
-  multiline?: boolean;
+  lineLength?: boolean;
 }) => (
   <div
     className={
-      multiline
+      lineLength
         ? 'flex flex-col gap-2 border-b border-slate-100 px-4 py-3.5 last:border-b-0'
         : 'flex flex-col gap-1 border-b border-slate-100 px-4 py-3.5 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-6'
     }
   >
-    <T font="xsmall" className="shrink-0 text-slate-500">
+    <T font="small" className="shrink-0 text-slate-700">
       {label}
     </T>
 
-    <div
-      className={
-        multiline
-          ? 'text-sm font-normal leading-relaxed text-slate-800'
-          : 'text-sm font-normal text-slate-500 sm:text-right'
-      }
+    <T
+      font="small"
+      as="div"
+      className={`text-slate-500 ${lineLength ? 'leading-relaxed' : 'sm:text-right'}`}
     >
       {value}
-    </div>
+    </T>
   </div>
 );
 
@@ -98,7 +96,7 @@ const PatientDetail = ({ patient }: PatientDetailProps) => {
             >
               <T
                 font="xsmall"
-                className="mb-1.5 text-center text-slate-500"
+                className="mb-1.5 text-center text-slate-700"
               >
                 {header.label}
               </T>
@@ -129,7 +127,7 @@ const PatientDetail = ({ patient }: PatientDetailProps) => {
                 key={row.label}
                 label={row.label}
                 value={row.value}
-                multiline={row.multiline}
+                lineLength={row.lineLength}
               />
             ))}
         </PanelSection>
