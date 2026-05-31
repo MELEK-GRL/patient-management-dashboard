@@ -1,6 +1,10 @@
 import { useMemo, useState, type ReactElement } from 'react';
 import clsx from 'clsx';
-import { HiOutlineDotsVertical } from 'react-icons/hi';
+import {
+  HiOutlineDotsVertical,
+  HiOutlinePencil,
+  HiOutlineTrash,
+} from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import {
@@ -83,7 +87,16 @@ const PatientCard = ({
     () => (
       <LeadingActions>
         <SwipeAction onClick={() => onEditPatient?.(patient)}>
-          <div className="h-full w-16" aria-label={t('edit')} />
+          <div
+            className="flex h-full w-full min-w-20 items-center justify-start gap-2 px-4 text-white"
+            style={{ backgroundColor: colors.buttonPrimary }}
+            aria-label={t('edit')}
+          >
+            <HiOutlinePencil className="h-5 w-5 shrink-0" />
+            <T font="semiBold" as="span" className="text-sm text-white">
+              {t('edit')}
+            </T>
+          </div>
         </SwipeAction>
       </LeadingActions>
     ),
@@ -93,8 +106,17 @@ const PatientCard = ({
   const rightActionSwipeable = useMemo(
     () => (
       <TrailingActions>
-        <SwipeAction onClick={() => setIsDeleteOpen(true)}>
-          <div className="h-full w-16" aria-label={t('delete')} />
+        <SwipeAction destructive onClick={() => setIsDeleteOpen(true)}>
+          <div
+            className="flex h-full w-full min-w-20 items-center justify-end gap-2 px-4 text-white"
+            style={{ backgroundColor: colors.buttonDanger }}
+            aria-label={t('delete')}
+          >
+            <T font="semiBold" as="span" className="text-sm text-white">
+              {t('delete')}
+            </T>
+            <HiOutlineTrash className="h-5 w-5 shrink-0" />
+          </div>
         </SwipeAction>
       </TrailingActions>
     ),

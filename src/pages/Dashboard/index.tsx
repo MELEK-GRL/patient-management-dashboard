@@ -32,7 +32,7 @@ export default function Dashboard() {
   const [isListLoading, setIsListLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
-  const [dateSort, setDateSort] = useState('old');
+  const [dateSort, setDateSort] = useState('newToOld');
   const [selectedPatientId, setSelectedPatientId] =
     useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -74,8 +74,8 @@ export default function Dashboard() {
 
   const dateSortOptions = useMemo(
     () => [
-      { value: 'old', label: t('sortNewToOld') },
-      { value: 'new', label: t('sortOldToNew') },
+      { value: 'newToOld', label: t('sortNewToOld') },
+      { value: 'oldToNew', label: t('sortOldToNew') },
     ],
     [t],
   );
@@ -118,6 +118,7 @@ export default function Dashboard() {
 
     const timer = window.setTimeout(() => {
       setIsListLoading(false);
+      //Loading animation görünmesi için timeout eklenmiştir.
     }, 350);
 
     return () => window.clearTimeout(timer);
@@ -142,7 +143,7 @@ export default function Dashboard() {
   }, [patients, t]);
 
   const filteredPatients = useMemo(() => {
-    const sortMultiplier = dateSort === 'new' ? 1 : -1;
+    const sortMultiplier = dateSort === 'oldToNew' ? 1 : -1;
 
     return patients
       .filter((patient) => {

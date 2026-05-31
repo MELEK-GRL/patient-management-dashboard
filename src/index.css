@@ -40,6 +40,15 @@
     overflow-y: visible;
   }
 
+  .swipeable-list-item {
+    border-radius: 0.5rem;
+  }
+
+  .swipeable-list-item__leading-actions,
+  .swipeable-list-item__trailing-actions {
+    border-radius: 0.5rem;
+  }
+
   .swipeable-list-item__content > *:first-child {
     width: 100%;
     flex: 1;

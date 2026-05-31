@@ -98,7 +98,6 @@ const CenterModal = ({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Kapat"
             className="
               flex
               h-8

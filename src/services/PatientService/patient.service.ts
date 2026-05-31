@@ -67,7 +67,7 @@ export const getPatients = async () => {
   return data;
 };
 
-export const EditPatientForm = (
+export const editPatientForm = (
   patient: Patient,
   language = 'tr',
 ): PatientFormState => {
@@ -106,7 +106,7 @@ export const isPatientFormValid = (form: PatientFormState) =>
   isValidTagsInput(form.tags) &&
   isValidScoreInput(form.score);
 
-export const SavePatientForm = (
+export const savePatientForm = (
   form: PatientFormState,
   existing?: Patient,
   language = 'tr',

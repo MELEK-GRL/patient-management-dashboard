@@ -11,8 +11,8 @@ import Dropdown from '../../molecules/Dropdown/Dropdown';
 import T from '../../atoms/Text/T';
 import {
   isPatientFormValid,
-  SavePatientForm,
-  EditPatientForm,
+  savePatientForm,
+  editPatientForm,
 } from '../../../services/PatientService/patient.service';
 import { useDispatch } from 'react-redux';
 import { addPatient, updatePatient } from '../../../store/patient.store';
@@ -48,7 +48,7 @@ const PatientForm = ({
   const isEdit = Boolean(patient);
   const [form, setForm] = useState(() =>
     patient
-      ? EditPatientForm(patient, i18n.language)
+      ? editPatientForm(patient, i18n.language)
       : createInitialPatientFormState(),
   );
   const [isValidationModalOpen, setIsValidationModalOpen] =
@@ -111,7 +111,7 @@ const PatientForm = ({
 
     await new Promise((resolve) => window.setTimeout(resolve, 500));
 
-    const savedPatient = SavePatientForm(
+    const savedPatient = savePatientForm(
       form,
       patient ?? undefined,
       i18n.language,
