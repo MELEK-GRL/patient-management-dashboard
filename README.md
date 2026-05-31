@@ -46,6 +46,72 @@ components/
 
 https://patient-management-dashboard-livid.vercel.app/
 
+## Ekran Görüntüleri
+
+### Masaüstü
+
+**Ana dashboard — hasta listesi**
+
+![Masaüstü hasta listesi](./docs/screenshots/desktop-patient-list.png)
+
+**Arama ve filtreleme**
+
+![Masaüstü arama](./docs/screenshots/desktop-search.png)
+
+**Hasta detay modalı**
+
+![Masaüstü hasta detayı](./docs/screenshots/desktop-patient-detail.png)
+
+**Yeni hasta ekleme**
+
+![Masaüstü yeni hasta formu](./docs/screenshots/desktop-add-patient.png)
+
+**Hasta düzenleme**
+
+![Masaüstü hasta düzenleme](./docs/screenshots/desktop-edit-patient.png)
+
+**Silme onayı**
+
+![Masaüstü silme onayı](./docs/screenshots/desktop-delete-confirm.png)
+
+### Mobil
+
+**Hasta listesi (kart görünümü)**
+
+![Mobil hasta listesi](./docs/screenshots/mobile-patient-list.png)
+
+**Hasta kartları**
+
+![Mobil hasta kartları](./docs/screenshots/mobile-patient-cards.png)
+
+**Hasta detay modalı**
+
+![Mobil hasta detayı](./docs/screenshots/mobile-patient-detail.png)
+
+**İşlem menüsü (düzenle / sil)**
+
+![Mobil işlem menüsü](./docs/screenshots/mobile-action-menu.png)
+
+**Swipe ile düzenleme**
+
+![Mobil swipe düzenleme](./docs/screenshots/mobile-swipe-edit.png)
+
+**Swipe ile silme**
+
+![Mobil swipe silme](./docs/screenshots/mobile-swipe-delete.png)
+
+**Yeni hasta ekleme**
+
+![Mobil yeni hasta formu](./docs/screenshots/mobile-add-patient.png)
+
+**Hasta düzenleme**
+
+![Mobil hasta düzenleme](./docs/screenshots/mobile-edit-patient.png)
+
+**İngilizce arayüz**
+
+![Mobil İngilizce arayüz](./docs/screenshots/mobile-en-list.png)
+
 ## Notlar
 
 Bu proje teknik bir case study olarak geliştirilmiştir. Hasta verileri API üzerinden çekilir. Ekleme, güncelleme ve silme işlemleri Redux state üzerinden yerel olarak yönetilir.
