@@ -247,30 +247,20 @@ const PatientForm = ({
             >
               {t('patientFormExtraConditions')}
             </T>
-            <span
-              className="text-sm font-bold"
-              style={{ color: colors.formRequired }}
-              aria-hidden
-            >
-              *
-            </span>
           </div>
           <div className="flex flex-wrap gap-x-8 gap-y-3">
             <CheckBox
               text={t('insured')}
-              required
               checked={form.isInsured}
               onChange={(checked) => updateField('isInsured', checked)}
             />
             <CheckBox
               text={t('followUp')}
-              required
               checked={form.isFollowUp}
               onChange={(checked) => updateField('isFollowUp', checked)}
             />
             <CheckBox
               text={t('vaccinated')}
-              required
               checked={form.isVaccinated}
               onChange={(checked) => updateField('isVaccinated', checked)}
             />

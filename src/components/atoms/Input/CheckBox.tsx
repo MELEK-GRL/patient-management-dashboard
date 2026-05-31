@@ -39,7 +39,7 @@ const CheckBox = ({
 
     <span
       className={clsx(
-        'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
+        'flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-colors',
         checked ? 'border-transparent text-white' : 'border-slate-300',
       )}
       style={{
