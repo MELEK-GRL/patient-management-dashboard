@@ -41,20 +41,22 @@ const DataRow = ({
     className={
       lineLength
         ? 'flex flex-col gap-2 border-b border-slate-100 px-4 py-3.5 last:border-b-0'
-        : 'flex flex-col gap-1 border-b border-slate-100 px-4 py-3.5 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-6'
+        : 'flex flex-row items-center justify-between gap-4 border-b border-slate-100 px-4 py-3.5 last:border-b-0'
     }
   >
     <T font="small" className="shrink-0 text-slate-700">
       {label}
     </T>
 
-    <T
-      font="small"
-      as="div"
-      className={`text-slate-500 ${lineLength ? 'leading-relaxed' : 'sm:text-right'}`}
+    <div
+      className={`min-w-0 shrink text-slate-500 ${lineLength ? 'leading-relaxed' : 'text-right'}`}
     >
-      {value}
-    </T>
+      {typeof value === 'string' || typeof value === 'number' ? (
+        <T font="small">{value}</T>
+      ) : (
+        value
+      )}
+    </div>
   </div>
 );
 
