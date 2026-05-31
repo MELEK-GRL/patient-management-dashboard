@@ -1,6 +1,14 @@
 import api from '../api';
 import type { Patient } from '../../types/patient.types';
 import type { PatientFormState } from '../../types/patientForm.types';
+import {
+  isValidNameInput,
+  isValidTagsInput,
+  isValidTextInput,
+  sanitizeNameInput,
+  sanitizeTagsInput,
+  sanitizeTextInput,
+} from '../../utils/inputValidation';
 
 const EMPTY_NOTE = '-';
 
@@ -52,8 +60,8 @@ export const EditPatientForm = (
   const isEn = language === 'en';
 
   return {
-    firstName,
-    lastName,
+    firstName: sanitizeNameInput(firstName),
+    lastName: sanitizeNameInput(lastName),
     birthDate: toDate(patient.birthDate),
     department: patient.department,
     appointmentDate: toDate(patient.appointmentDate),
@@ -61,10 +69,12 @@ export const EditPatientForm = (
     priority: patient.priority,
     score: String(patient.score),
     bloodType: patient.bloodType,
-    diagnosis: isEn ? patient.diagnosis_en : patient.diagnosis_tr,
-    note: noteToForm(isEn ? patient.note_en : patient.note_tr),
-    tags: tagsToForm(patient.tags),
-    notes: patient.notes?.trim() ?? '',
+    diagnosis: sanitizeTextInput(isEn ? patient.diagnosis_en : patient.diagnosis_tr),
+    note: sanitizeTextInput(
+      noteToForm(isEn ? patient.note_en : patient.note_tr),
+    ),
+    tags: sanitizeTagsInput(tagsToForm(patient.tags)),
+    notes: sanitizeTextInput(patient.notes?.trim() ?? ''),
     isInsured: patient.isInsured,
     isFollowUp: patient.isFollowUp,
     isVaccinated: patient.isVaccinated,
@@ -72,7 +82,13 @@ export const EditPatientForm = (
 };
 
 export const isPatientFormValid = (form: PatientFormState) =>
-  REQUIRED_FIELDS.every((field) => form[field].trim() !== '');
+  REQUIRED_FIELDS.every((field) => form[field].trim() !== '') &&
+  isValidNameInput(form.firstName) &&
+  isValidNameInput(form.lastName) &&
+  isValidTextInput(form.diagnosis) &&
+  isValidTextInput(form.note) &&
+  isValidTextInput(form.notes) &&
+  isValidTagsInput(form.tags);
 
 export const SavePatientForm = (
   form: PatientFormState,
@@ -80,12 +96,14 @@ export const SavePatientForm = (
   language = 'tr',
 ): Patient => {
   const isEn = language === 'en';
-  const note = formatNoteForDisplay(form.note);
-  const diagnosis = form.diagnosis.trim();
+  const note = formatNoteForDisplay(sanitizeTextInput(form.note));
+  const diagnosis = sanitizeTextInput(form.diagnosis.trim());
+  const firstName = sanitizeNameInput(form.firstName.trim());
+  const lastName = sanitizeNameInput(form.lastName.trim());
 
   return {
     id: existing?.id ?? `pat-${Date.now()}`,
-    fullName: `${form.firstName.trim()} ${form.lastName.trim()}`,
+    fullName: `${firstName} ${lastName}`,
     birthDate: form.birthDate,
     appointmentDate: `${form.appointmentDate}T00:00:00`,
     department: form.department,
@@ -100,7 +118,7 @@ export const SavePatientForm = (
     isInsured: form.isInsured,
     isFollowUp: form.isFollowUp,
     isVaccinated: form.isVaccinated,
-    tags: tagsFromForm(form.tags),
-    notes: form.notes.trim() || null,
+    tags: tagsFromForm(sanitizeTagsInput(form.tags)),
+    notes: sanitizeTextInput(form.notes.trim()) || null,
   };
 };

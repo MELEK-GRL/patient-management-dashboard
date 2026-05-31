@@ -3,6 +3,10 @@ import clsx from 'clsx';
 import T from '../Text/T';
 import { colors } from '../../../styles/colors';
 import { formatIdControl } from '../../../utils/formatDate';
+import {
+  sanitizeInput,
+  type InputSanitizeMode,
+} from '../../../utils/inputValidation';
 
 export type InputProps = {
   label?: string;
@@ -16,6 +20,7 @@ export type InputProps = {
   min?: number;
   max?: number;
   disabled?: boolean;
+  sanitize?: InputSanitizeMode;
   onChange?: (value: string) => void;
 };
 
@@ -31,6 +36,7 @@ const Input = ({
   min,
   max,
   disabled,
+  sanitize,
   onChange,
 }: InputProps) => {
   const inputId = formatIdControl(label, id);
@@ -66,7 +72,12 @@ const Input = ({
         min={min}
         max={max}
         disabled={disabled}
-        onChange={(e) => onChange?.(e.target.value)}
+        onChange={(e) => {
+          const nextValue = sanitize
+            ? sanitizeInput(e.target.value, sanitize)
+            : e.target.value;
+          onChange?.(nextValue);
+        }}
         className="w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#CBD5E1] disabled:cursor-not-allowed placeholder:text-slate-400"
         style={{
           borderColor: colors.fieldBorder,

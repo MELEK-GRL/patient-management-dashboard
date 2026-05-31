@@ -66,6 +66,19 @@ describe('Input', () => {
     expect(screen.getByText('En az 2 karakter')).toBeInTheDocument();
   });
 
+  it('sanitize ile özel karakterleri engeller', () => {
+    const onChange = vi.fn();
+
+    render(
+      <Input label="Ad" sanitize="name" value="" onChange={onChange} />,
+    );
+    fireEvent.change(screen.getByLabelText('Ad'), {
+      target: { value: '<Ali>123' },
+    });
+
+    expect(onChange).toHaveBeenCalledWith('Ali');
+  });
+
   it('id verilirse input id olarak kullanır', () => {
     render(
       <Input label="Kimlik" id="patient-name" value="" onChange={vi.fn()} />,

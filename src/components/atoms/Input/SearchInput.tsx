@@ -1,6 +1,8 @@
 import { HiOutlineSearch } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 
+import { sanitizeNameInput } from '../../../utils/inputValidation';
+
 interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
@@ -20,7 +22,7 @@ const SearchInput = ({ value, onChange }: SearchInputProps) => {
         type="search"
         value={value}
         placeholder={t('searchPlaceholder')}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(sanitizeNameInput(e.target.value))}
         aria-label={t('searchAriaLabel')}
         className="w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-200/80"
       />

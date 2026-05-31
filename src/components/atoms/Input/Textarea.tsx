@@ -3,6 +3,10 @@ import clsx from 'clsx';
 import T from '../Text/T';
 import { colors } from '../../../styles/colors';
 import { formatIdControl } from '../../../utils/formatDate';
+import {
+  sanitizeInput,
+  type InputSanitizeMode,
+} from '../../../utils/inputValidation';
 
 export type TextareaProps = {
   label?: string;
@@ -14,6 +18,7 @@ export type TextareaProps = {
   value?: string;
   placeholder?: string;
   disabled?: boolean;
+  sanitize?: Extract<InputSanitizeMode, 'text'>;
   onChange?: (value: string) => void;
 };
 
@@ -27,6 +32,7 @@ const Textarea = ({
   value,
   placeholder,
   disabled,
+  sanitize,
   onChange,
 }: TextareaProps) => {
   const textareaId = formatIdControl(label, id);
@@ -60,7 +66,12 @@ const Textarea = ({
         value={value}
         placeholder={placeholder}
         disabled={disabled}
-        onChange={(e) => onChange?.(e.target.value)}
+        onChange={(e) => {
+          const nextValue = sanitize
+            ? sanitizeInput(e.target.value, sanitize)
+            : e.target.value;
+          onChange?.(nextValue);
+        }}
         className="min-h-22 w-full resize-y rounded-lg border px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#CBD5E1] disabled:cursor-not-allowed placeholder:text-slate-400"
         style={{
           borderColor: colors.fieldBorder,

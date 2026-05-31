@@ -151,6 +151,7 @@ const PatientForm = ({
           <Input
             label={t('firstName')}
             required
+            sanitize="name"
             placeholder={t('patientFormFirstNamePlaceholder')}
             value={form.firstName}
             onChange={(value) => updateField('firstName', value)}
@@ -159,6 +160,7 @@ const PatientForm = ({
           <Input
             label={t('lastName')}
             required
+            sanitize="name"
             placeholder={t('patientFormLastNamePlaceholder')}
             value={form.lastName}
             onChange={(value) => updateField('lastName', value)}
@@ -227,6 +229,7 @@ const PatientForm = ({
 
           <Input
             label={t('tags')}
+            sanitize="tags"
             placeholder={t('patientFormTagsPlaceholder')}
             explanation={t('patientFormTagsExplanation')}
             value={form.tags}
@@ -278,6 +281,7 @@ const PatientForm = ({
           <Textarea
             label={t('diagnosis')}
             required
+            sanitize="text"
             placeholder={t('patientFormDiagnosisPlaceholder')}
             rows={2}
             value={form.diagnosis}
@@ -286,6 +290,7 @@ const PatientForm = ({
 
           <Textarea
             label={t('note')}
+            sanitize="text"
             placeholder={t('patientFormNotePlaceholder')}
             rows={2}
             value={form.note}
@@ -294,6 +299,7 @@ const PatientForm = ({
 
           <Textarea
             label={t('notes')}
+            sanitize="text"
             placeholder={t('patientFormNotesPlaceholder')}
             rows={2}
             value={form.notes}
