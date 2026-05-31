@@ -1,19 +1,21 @@
 # Patient Management Dashboard
 
-A patient management dashboard developed with React 18 and TypeScript. The application allows users to view patient records from an API, perform local CRUD operations, search, filter, sort, and switch between Turkish and English languages.
+React 18 ve TypeScript ile geliştirilmiş bir hasta yönetim paneli. Uygulama; API'den hasta kayıtlarını görüntülemeye, yerel CRUD işlemleri yapmaya, arama, filtreleme, sıralama ve Türkçe/İngilizce dil desteği sunmaya olanak tanır.
 
-## Features
+## Özellikler
 
-* Fetch patient data from API
-* Add new patients locally
-* Edit existing patient records
-* Delete patient records locally
-* Search patients by name
-* Filter patients by status
-* Sort patients by appointment date
-* Patient detail modal
-* Turkish / English language support
-* Responsive design
+* API'den hasta verisi çekme
+* Yerel olarak yeni hasta ekleme
+* Mevcut hasta kayıtlarını düzenleme
+* Hasta kayıtlarını yerel olarak silme
+* İsme göre hasta arama
+* Duruma göre filtreleme
+* Randevu tarihine göre sıralama
+* Frontend tarafında pagination (sayfa başına 10 kayıt)
+* Mobilde swipe ile düzenleme ve silme işlemleri
+* Hasta detay modalı
+* Türkçe / İngilizce dil desteği
+* Responsive tasarım
 
 ## Tech Stack
 
@@ -25,10 +27,12 @@ A patient management dashboard developed with React 18 and TypeScript. The appli
 * i18next
 * Tailwind CSS
 * Vite
+* Vitest
+* react-swipeable-list
 
-## Project Structure
+## Proje Yapısı
 
-The project is organized using the Atomic Design approach.
+Proje Atomic Design yaklaşımıyla organize edilmiştir.
 
 ```text
 components/
@@ -38,32 +42,40 @@ components/
 └── templates
 ```
 
-## Installation
-
-```bash
-yarn install
-```
-
-## Run Development Server
-
-```bash
-yarn dev
-```
-
-## Build Project
-
-```bash
-yarn build
-```
-
 ## Live Demo
 
-Vercel deployment link will be shared here.
+Vercel deployment linki buraya eklenecek.
 
-## Notes
+## Notlar
 
-This project was developed as a technical case study. API data is fetched remotely, while create, update and delete operations are managed locally through Redux state.
+Bu proje teknik bir case study olarak geliştirilmiştir. Hasta verileri API üzerinden çekilir. Ekleme, güncelleme ve silme işlemleri Redux state üzerinden yerel olarak yönetilir.
 
-### Language Support
+## Dil Desteği
 
-The application supports Turkish and English UI translations. Interface texts are translated, while patient-related data (e.g. names, departments, and status values) is displayed as received from the API.
+Uygulama arayüzünde Türkçe ve İngilizce desteklenmektedir. Arayüz metinleri seçilen dile göre çevrilir. Hasta verileri (isim, bölüm, durum vb.) API'den geldiği haliyle gösterilir.
+
+## Pagination
+
+Hasta listeleri frontend tarafında sayfalanmaktadır. `usePagination` hook'u filtrelenmiş sonuçları sayfa başına 10 kayıt olacak şekilde böler. Arama, filtreleme veya sıralama kriterleri değiştiğinde aktif sayfa otomatik olarak ilk sayfaya döner.
+
+Pagination hem masaüstü tablo görünümünde hem de mobil kart görünümünde kullanılmaktadır.
+
+## Mobil Swipe Aksiyonları
+
+Mobil cihazlarda hasta kartları `react-swipeable-list` kütüphanesi kullanılarak kaydırılabilir.
+
+* Sağa kaydırma → Düzenleme
+* Sola kaydırma → Silme
+
+Alternatif olarak kullanıcılar işlemleri üç nokta menüsü üzerinden de gerçekleştirebilir.
+
+
+## Testler
+
+Proje içerisinde temel UI bileşenleri ve yardımcı fonksiyonlar Vitest kullanılarak test edilmiştir.
+
+=> Test edilen dosyalar:
+Button.test.tsx
+Input.test.tsx
+formatDate.test.ts
+patientStatus.test.ts
