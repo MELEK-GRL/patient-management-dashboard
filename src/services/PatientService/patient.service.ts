@@ -30,8 +30,20 @@ const REQUIRED_FIELDS = [
 const toDate = (date: string) => date.split('T')[0];
 
 const splitName = (fullName: string) => {
-  const parts = fullName.trim().split(/\s+/);
-  return { firstName: parts[0], lastName: parts.slice(1).join(' ') };
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
+
+  if (parts.length === 0) {
+    return { firstName: '', lastName: '' };
+  }
+
+  if (parts.length === 1) {
+    return { firstName: parts[0], lastName: '' };
+  }
+
+  return {
+    firstName: parts.slice(0, -1).join(' '),
+    lastName: parts[parts.length - 1],
+  };
 };
 
 export const formatNoteForDisplay = (note: string) => note.trim() || EMPTY_NOTE;
@@ -106,7 +118,7 @@ export const SavePatientForm = (
 
   return {
     id: existing?.id ?? `pat-${Date.now()}`,
-    fullName: `${firstName} ${lastName}`,
+    fullName: [firstName, lastName].filter(Boolean).join(' '),
     birthDate: form.birthDate,
     appointmentDate: `${form.appointmentDate}T00:00:00`,
     department: form.department,
