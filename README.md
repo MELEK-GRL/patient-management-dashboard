@@ -44,7 +44,7 @@ components/
 
 ## Live Demo
 
-Vercel deployment linki buraya eklenecek.
+https://patient-management-dashboard-livid.vercel.app/
 
 ## Notlar
 
