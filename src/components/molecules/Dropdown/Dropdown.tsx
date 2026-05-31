@@ -24,6 +24,7 @@ interface DropdownProps {
   placeholder?: string;
   className?: string;
   fontWeight?: 'normal' | 'semibold';
+  mutedText?: boolean;
 }
 
 const fieldStyle = {
@@ -43,6 +44,7 @@ const Dropdown = ({
   placeholder,
   className,
   fontWeight = 'normal',
+  mutedText = false,
 }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -51,7 +53,7 @@ const Dropdown = ({
   const visibleOptions = getVisibleOptions(options, placeholder);
   const selectedOption = visibleOptions.find((option) => option.value === value);
   const buttonLabel = getButtonLabel(selectedOption, value, placeholder);
-  const buttonTextColor = getButtonTextColor(value, selectedOption);
+  const buttonTextColor = getButtonTextColor(value, selectedOption, mutedText);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -252,9 +254,13 @@ function getButtonLabel(
 function getButtonTextColor(
   value: string,
   selectedOption: DropdownOption | undefined,
+  mutedText = false,
 ): string {
-  if (value && selectedOption) return colors.dropdownTextValue;
-  return colors.dropdownTextPlaceholder;
+  if (mutedText || !value || !selectedOption) {
+    return colors.dropdownTextPlaceholder;
+  }
+
+  return colors.dropdownTextValue;
 }
 
 export default Dropdown;

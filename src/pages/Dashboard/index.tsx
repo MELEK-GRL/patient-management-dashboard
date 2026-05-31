@@ -205,6 +205,7 @@ export default function Dashboard() {
           options={dateSortOptions}
           onChange={handleDateSortChange}
           fontWeight="normal"
+          mutedText
           className="lg:w-48"
         />
       </div>
