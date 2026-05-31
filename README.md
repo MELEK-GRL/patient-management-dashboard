@@ -46,6 +46,41 @@ components/
 
 https://patient-management-dashboard-livid.vercel.app/
 
+## Notlar
+
+Bu proje teknik bir case study olarak geliştirilmiştir. Hasta verileri API üzerinden çekilir. Ekleme, güncelleme ve silme işlemleri Redux state üzerinden yerel olarak yönetilir.
+
+## Dil Desteği
+
+Uygulama arayüzünde Türkçe ve İngilizce desteklenmektedir. Arayüz metinleri seçilen dile göre çevrilir. Hasta verileri (isim, bölüm, durum vb.) API'den geldiği haliyle gösterilir.
+
+## Pagination
+
+Hasta listeleri frontend tarafında sayfalanmaktadır. `usePagination` hook'u filtrelenmiş sonuçları sayfa başına 10 kayıt olacak şekilde böler. Arama, filtreleme veya sıralama kriterleri değiştiğinde aktif sayfa otomatik olarak ilk sayfaya döner.
+
+Pagination hem masaüstü tablo görünümünde hem de mobil kart görünümünde kullanılmaktadır.
+
+## Mobil Swipe Aksiyonları
+
+Mobil cihazlarda hasta kartları `react-swipeable-list` kütüphanesi kullanılarak kaydırılabilir.
+
+* Sağa kaydırma → Düzenleme
+* Sola kaydırma → Silme
+
+Alternatif olarak kullanıcılar işlemleri üç nokta menüsü üzerinden de gerçekleştirebilir.
+
+
+## Testler
+
+Proje içerisinde temel UI bileşenleri ve yardımcı fonksiyonlar Vitest kullanılarak test edilmiştir.
+
+=> Test edilen dosyalar:
+Button.test.tsx
+Input.test.tsx
+formatDate.test.ts
+patientStatus.test.ts
+
+
 ## Ekran Görüntüleri
 
 ### Masaüstü
@@ -96,14 +131,6 @@ https://patient-management-dashboard-livid.vercel.app/
 
 ![Mobil swipe düzenleme](./docs/screenshots/mobile-swipe-edit.png)
 
-**Swipe ile silme**
-
-![Mobil swipe silme](./docs/screenshots/mobile-swipe-delete.png)
-
-**Yeni hasta ekleme**
-
-![Mobil yeni hasta formu](./docs/screenshots/mobile-add-patient.png)
-
 **Hasta düzenleme**
 
 ![Mobil hasta düzenleme](./docs/screenshots/mobile-edit-patient.png)
@@ -112,36 +139,3 @@ https://patient-management-dashboard-livid.vercel.app/
 
 ![Mobil İngilizce arayüz](./docs/screenshots/mobile-en-list.png)
 
-## Notlar
-
-Bu proje teknik bir case study olarak geliştirilmiştir. Hasta verileri API üzerinden çekilir. Ekleme, güncelleme ve silme işlemleri Redux state üzerinden yerel olarak yönetilir.
-
-## Dil Desteği
-
-Uygulama arayüzünde Türkçe ve İngilizce desteklenmektedir. Arayüz metinleri seçilen dile göre çevrilir. Hasta verileri (isim, bölüm, durum vb.) API'den geldiği haliyle gösterilir.
-
-## Pagination
-
-Hasta listeleri frontend tarafında sayfalanmaktadır. `usePagination` hook'u filtrelenmiş sonuçları sayfa başına 10 kayıt olacak şekilde böler. Arama, filtreleme veya sıralama kriterleri değiştiğinde aktif sayfa otomatik olarak ilk sayfaya döner.
-
-Pagination hem masaüstü tablo görünümünde hem de mobil kart görünümünde kullanılmaktadır.
-
-## Mobil Swipe Aksiyonları
-
-Mobil cihazlarda hasta kartları `react-swipeable-list` kütüphanesi kullanılarak kaydırılabilir.
-
-* Sağa kaydırma → Düzenleme
-* Sola kaydırma → Silme
-
-Alternatif olarak kullanıcılar işlemleri üç nokta menüsü üzerinden de gerçekleştirebilir.
-
-
-## Testler
-
-Proje içerisinde temel UI bileşenleri ve yardımcı fonksiyonlar Vitest kullanılarak test edilmiştir.
-
-=> Test edilen dosyalar:
-Button.test.tsx
-Input.test.tsx
-formatDate.test.ts
-patientStatus.test.ts
