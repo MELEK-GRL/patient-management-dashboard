@@ -1,3 +1,4 @@
+import type { InputHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
 import T from '../Text/T';
@@ -20,6 +21,7 @@ export type InputProps = {
   min?: number;
   max?: number;
   disabled?: boolean;
+  inputMode?: InputHTMLAttributes<HTMLInputElement>['inputMode'];
   sanitize?: InputSanitizeMode;
   onChange?: (value: string) => void;
 };
@@ -36,6 +38,7 @@ const Input = ({
   min,
   max,
   disabled,
+  inputMode,
   sanitize,
   onChange,
 }: InputProps) => {
@@ -71,6 +74,7 @@ const Input = ({
         placeholder={placeholder}
         min={min}
         max={max}
+        inputMode={inputMode}
         disabled={disabled}
         onChange={(e) => {
           const nextValue = sanitize

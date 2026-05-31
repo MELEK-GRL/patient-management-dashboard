@@ -210,9 +210,9 @@ const PatientForm = ({
           <Input
             label={t('score')}
             required
-            type="number"
-            min={0}
-            max={10}
+            type="text"
+            inputMode="numeric"
+            sanitize="score"
             placeholder="0"
             value={form.score}
             onChange={(value) => updateField('score', value)}

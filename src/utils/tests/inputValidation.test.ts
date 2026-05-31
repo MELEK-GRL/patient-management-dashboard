@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   isValidNameInput,
   sanitizeNameInput,
+  sanitizeScoreInput,
   sanitizeTagsInput,
   sanitizeTextInput,
 } from '../inputValidation';
@@ -29,6 +30,12 @@ describe('inputValidation', () => {
       'diyabet, hipertansiyon',
     );
     expect(sanitizeTagsInput('tag<script>, test')).toBe('tagscript, test');
+  });
+
+  it('skor alanında en fazla 3 hane kabul eder', () => {
+    expect(sanitizeScoreInput('1234')).toBe('123');
+    expect(sanitizeScoreInput('8a2')).toBe('82');
+    expect(sanitizeScoreInput('')).toBe('');
   });
 
   it('geçerli isim kontrolü yapar', () => {

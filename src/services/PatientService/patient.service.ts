@@ -3,9 +3,11 @@ import type { Patient } from '../../types/patient.types';
 import type { PatientFormState } from '../../types/patientForm.types';
 import {
   isValidNameInput,
+  isValidScoreInput,
   isValidTagsInput,
   isValidTextInput,
   sanitizeNameInput,
+  sanitizeScoreInput,
   sanitizeTagsInput,
   sanitizeTextInput,
 } from '../../utils/inputValidation';
@@ -67,7 +69,7 @@ export const EditPatientForm = (
     appointmentDate: toDate(patient.appointmentDate),
     status: patient.status,
     priority: patient.priority,
-    score: String(patient.score),
+    score: sanitizeScoreInput(String(patient.score)),
     bloodType: patient.bloodType,
     diagnosis: sanitizeTextInput(isEn ? patient.diagnosis_en : patient.diagnosis_tr),
     note: sanitizeTextInput(
@@ -88,7 +90,8 @@ export const isPatientFormValid = (form: PatientFormState) =>
   isValidTextInput(form.diagnosis) &&
   isValidTextInput(form.note) &&
   isValidTextInput(form.notes) &&
-  isValidTagsInput(form.tags);
+  isValidTagsInput(form.tags) &&
+  isValidScoreInput(form.score);
 
 export const SavePatientForm = (
   form: PatientFormState,
@@ -110,7 +113,7 @@ export const SavePatientForm = (
     status: form.status,
     priority: form.priority,
     bloodType: form.bloodType,
-    score: Number(form.score),
+    score: Number(sanitizeScoreInput(form.score)),
     diagnosis_tr: isEn ? (existing?.diagnosis_tr ?? '') : diagnosis,
     diagnosis_en: isEn ? diagnosis : (existing?.diagnosis_en ?? diagnosis),
     note_tr: isEn ? (existing?.note_tr ?? '') : note,
