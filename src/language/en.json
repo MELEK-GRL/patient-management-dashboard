@@ -30,6 +30,7 @@
   "appointment": "Appointment",
   "appointmentDate": "Appointment Date",
   "birthDate": "Date of Birth",
+  "createdAt": "Created At",
   "fullName": "Full Name",
   "firstName": "First Name",
   "lastName": "Last Name",

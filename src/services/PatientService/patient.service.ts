@@ -1,5 +1,6 @@
 import api from '../api';
 import type { Patient } from '../../types/patient.types';
+import { formatTodayDate } from '../../utils/formatDate';
 import type { PatientFormState } from '../../types/patientForm.types';
 import {
   isValidNameInput,
@@ -121,6 +122,7 @@ export const SavePatientForm = (
     fullName: [firstName, lastName].filter(Boolean).join(' '),
     birthDate: form.birthDate,
     appointmentDate: `${form.appointmentDate}T00:00:00`,
+    createdAt: existing?.createdAt ?? `${formatTodayDate()}T00:00:00`,
     department: form.department,
     status: form.status,
     priority: form.priority,

@@ -1,11 +1,10 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import Badge from '../../atoms/Badge/Badge';
 import T from '../../atoms/Text/T';
 import type { Patient } from '../../../types/patient.types';
 import { getPatientDetails } from './PatientData/PatientDetailData';
-import { formatPriority } from '../../../utils/patientStatus';
+import { formatDate } from '../../../utils/formatDate';
 
 interface PatientDetailProps {
   patient: Patient;
@@ -62,18 +61,12 @@ const DataRow = ({
 const PatientDetail = ({ patient }: PatientDetailProps) => {
   const { t, i18n } = useTranslation();
 
-  const statusHeaders = useMemo(
-    () => [
-      { id: 'status' as const, label: t('patientDetailStatus') },
-      { id: 'priority' as const, label: t('patientDetailPriority') },
-    ],
-    [t],
-  );
-
   const patientDetails = useMemo(
     () => getPatientDetails(patient, t, i18n.language),
     [patient, t, i18n.language],
   );
+
+  const appointmentLabel = formatDate(patient.appointmentDate);
 
   return (
     <div className="space-y-5">
@@ -88,33 +81,13 @@ const PatientDetail = ({ patient }: PatientDetailProps) => {
           </T>
         </div>
 
-        <div className="flex shrink-0 gap-4">
-          {statusHeaders.map((header) => (
-            <div
-              key={header.id}
-              className="flex flex-col items-center"
-            >
-              <T
-                font="xsmall"
-                className="mb-1.5 text-center text-slate-700"
-              >
-                {header.label}
-              </T>
-
-              <Badge
-                label={
-                  header.id === 'status'
-                    ? patient.status
-                    : formatPriority(patient.priority, t)
-                }
-                status={
-                  header.id === 'status'
-                    ? patient.status
-                    : patient.priority
-                }
-              />
-            </div>
-          ))}
+        <div className="flex shrink-0 flex-col items-end">
+          <T font="semiBold" className="text-lg text-slate-900">
+            {t('appointmentDate')}
+          </T>
+          <T font="xsmall" className="mt-1 block text-slate-500">
+            {appointmentLabel}
+          </T>
         </div>
       </div>
 

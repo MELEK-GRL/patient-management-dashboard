@@ -3,6 +3,7 @@ export interface Patient {
     fullName: string;
     birthDate: string;
     appointmentDate: string;
+    createdAt: string;
     department: string;
     status: string;
     priority: string;

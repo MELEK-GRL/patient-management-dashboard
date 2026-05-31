@@ -2,12 +2,13 @@ import type { TFunction } from 'i18next';
 import type { ReactNode } from 'react';
 
 import type { Patient } from '../../../../types/patient.types';
+import Badge from '../../../atoms/Badge/Badge';
 import {
   formatNoteForDisplay,
   tagsToForm,
 } from '../../../../services/PatientService/patient.service';
 import { formatDate } from '../../../../utils/formatDate';
-import { formatBoolean } from '../../../../utils/patientStatus';
+import { formatBoolean, formatPriority } from '../../../../utils/patientStatus';
 
 export type PatientDetailRow = {
   label: string;
@@ -24,12 +25,27 @@ export const getPatientDetails = (
 
   return [
     {
-      label: t('appointment'),
-      value: formatDate(patient.appointmentDate),
+      label: t('status'),
+      value: (
+        <Badge label={patient.status} status={patient.status} />
+      ),
+    },
+    {
+      label: t('priority'),
+      value: (
+        <Badge
+          label={formatPriority(patient.priority, t)}
+          status={patient.priority}
+        />
+      ),
     },
     {
       label: t('birthDate'),
       value: formatDate(patient.birthDate),
+    },
+    {
+      label: t('createdAt'),
+      value: formatDate(patient.createdAt),
     },
     {
       label: t('bloodGroup'),

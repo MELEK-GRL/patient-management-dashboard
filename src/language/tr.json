@@ -30,6 +30,7 @@
   "appointment": "Randevu",
   "appointmentDate": "Randevu Tarihi",
   "birthDate": "Doğum Tarihi",
+  "createdAt": "Kayıt Tarihi",
   "fullName": "Ad Soyad",
   "firstName": "Ad",
   "lastName": "Soyad",
