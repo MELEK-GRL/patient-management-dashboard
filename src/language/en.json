@@ -85,5 +85,9 @@
   "deletePatientSuccessMessage": "Patient record deleted successfully.",
   "retry": "Try Again",
   "emptyStateTitle": "No data found",
-  "emptyStateDescription": "No records match your search or filters."
+  "emptyStateDescription": "No records match your search or filters.",
+  "paginationLabel": "Pagination",
+  "paginationPrevious": "Previous page",
+  "paginationNext": "Next page",
+  "paginationPage": "Page {{page}}"
 }

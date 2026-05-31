@@ -85,5 +85,9 @@
   "deletePatientSuccessMessage": "Hasta kaydı başarıyla silindi.",
   "retry": "Tekrar Dene",
   "emptyStateTitle": "Veri bulunamadı",
-  "emptyStateDescription": "Arama veya filtreye uygun kayıt bulunamadı."
+  "emptyStateDescription": "Arama veya filtreye uygun kayıt bulunamadı.",
+  "paginationLabel": "Sayfalama",
+  "paginationPrevious": "Önceki sayfa",
+  "paginationNext": "Sonraki sayfa",
+  "paginationPage": "Sayfa {{page}}"
 }

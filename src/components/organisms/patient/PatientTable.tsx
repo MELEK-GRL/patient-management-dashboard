@@ -11,6 +11,7 @@ import Button from '../../atoms/Button/Button';
 import EmptyState from '../../atoms/FeedBack/EmptyState';
 import PopupModal from '../../atoms/Modal/PopupModal';
 import T from '../../atoms/Text/T';
+import Pagination from '../../molecules/Pagination/Pagination';
 import { deletePatient } from '../../../store/patient.store';
 import type { Patient } from '../../../types/patient.types';
 import { formatDate } from '../../../utils/formatDate';
@@ -18,6 +19,11 @@ import { formatPriority } from '../../../utils/patientStatus';
 
 interface PatientTableProps {
   patients: Patient[];
+  totalCount?: number;
+  page?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
+  showPagination?: boolean;
   onPatientClick?: (patient: Patient) => void;
   onDeletePatient?: (patientId: string) => void;
   onAddPatient?: () => void;
@@ -37,6 +43,11 @@ const tableHeaders = [
 
 const PatientTable = ({
   patients,
+  totalCount,
+  page = 1,
+  totalPages = 1,
+  onPageChange,
+  showPagination = false,
   onPatientClick,
   onDeletePatient,
   onAddPatient,
@@ -88,7 +99,7 @@ const PatientTable = ({
               font="small"
               className="tabular-nums font-medium text-slate-800"
             >
-              {patients.length}
+              {totalCount ?? patients.length}
             </T>
           </div>
 
@@ -210,6 +221,15 @@ const PatientTable = ({
           </tbody>
         </table>
       </div>
+
+      {showPagination && onPageChange && (
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+          className="mt-4 border-t border-slate-100 pt-4"
+        />
+      )}
 
       <PopupModal
         open={patientToDelete !== null}

@@ -13,6 +13,8 @@ import PatientCard from '../../components/organisms/patient/PatientCard';
 import PatientDetail from '../../components/organisms/patient/PatientDetail';
 import PatientForm from '../../components/organisms/patient/PatientForm';
 import PatientTable from '../../components/organisms/patient/PatientTable';
+import Pagination from '../../components/molecules/Pagination/Pagination';
+import { usePagination } from '../../components/molecules/Pagination/usePagination';
 import { getPatients } from '../../services/PatientService/patient.service';
 import { setPatients } from '../../store/patient.store';
 import type { Patient } from '../../types/patient.types';
@@ -160,6 +162,14 @@ export default function Dashboard() {
       );
   }, [patients, search, status, dateSort]);
 
+  const {
+    paginatedItems,
+    page,
+    totalPages,
+    setPage,
+    showPagination,
+  } = usePagination(filteredPatients);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -232,7 +242,12 @@ export default function Dashboard() {
         )}
 
         <PatientTable
-          patients={filteredPatients}
+          patients={paginatedItems}
+          totalCount={filteredPatients.length}
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          showPagination={showPagination}
           onPatientClick={handlePatientClick}
           onAddPatient={handleOpenAddForm}
           onEditPatient={handleOpenEditForm}
@@ -284,21 +299,32 @@ export default function Dashboard() {
           {filteredPatients.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="space-y-2.5">
-              {filteredPatients.map((patient) => (
-                <PatientCard
-                  key={patient.id}
-                  patient={patient}
-                  onPatientClick={handlePatientClick}
-                  onEditPatient={handleOpenEditForm}
-                  onDeletePatient={(patientId) => {
-                    if (selectedPatientId === patientId) {
-                      setSelectedPatientId(null);
-                    }
-                  }}
+            <>
+              <div className="space-y-2.5">
+                {paginatedItems.map((patient) => (
+                  <PatientCard
+                    key={patient.id}
+                    patient={patient}
+                    onPatientClick={handlePatientClick}
+                    onEditPatient={handleOpenEditForm}
+                    onDeletePatient={(patientId) => {
+                      if (selectedPatientId === patientId) {
+                        setSelectedPatientId(null);
+                      }
+                    }}
+                  />
+                ))}
+              </div>
+
+              {showPagination && (
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                  className="mt-4"
                 />
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </div>
