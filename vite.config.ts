@@ -9,12 +9,23 @@ export default defineConfig({
     include: ['prop-types', 'react-swipeable-list'],
   },
   resolve: {
-    mainFields: ['module', 'jsnext:main', 'jsnext', 'main'],
+    conditions: ['browser', 'module', 'import', 'default'],
+    mainFields: ['browser', 'module', 'jsnext:main', 'jsnext', 'main'],
     alias: {
       'react-swipeable-list$': resolve(
         __dirname,
         'node_modules/react-swipeable-list/dist/react-swipeable-list.esm.js',
       ),
+      'prop-types': resolve(
+        __dirname,
+        'node_modules/prop-types/prop-types.js',
+      ),
+    },
+  },
+  build: {
+    commonjsOptions: {
+      include: [/prop-types/, /react-swipeable-list/, /react-is/],
+      requireReturnsDefault: 'auto',
     },
   },
 })
