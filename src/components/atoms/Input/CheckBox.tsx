@@ -39,13 +39,14 @@ const CheckBox = ({
 
     <span
       className={clsx(
-        'flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-colors',
-        checked ? 'border-transparent text-white' : 'border-slate-300',
+        'flex h-5 w-5 shrink-0 items-center justify-center rounded border shadow-none ring-0 transition-colors',
+        checked && 'border-transparent text-white',
       )}
       style={{
         backgroundColor: checked
           ? colors.checkboxChecked
           : colors.checkboxBackground,
+        borderColor: checked ? 'transparent' : colors.fieldBorder,
       }}
     >
       {checked && <HiOutlineCheck className="h-3 w-3" strokeWidth={3} />}

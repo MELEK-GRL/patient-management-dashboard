@@ -24,7 +24,7 @@ const SearchInput = ({ value, onChange }: SearchInputProps) => {
         placeholder={t('searchPlaceholder')}
         onChange={(e) => onChange(sanitizeNameInput(e.target.value))}
         aria-label={t('searchAriaLabel')}
-        className="w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-200/80"
+        className="w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 shadow-none outline-none ring-0 transition-colors placeholder:text-slate-400 focus:border-[#CBD5E1] focus:shadow-none focus:ring-0 focus:outline-none"
       />
     </div>
   );

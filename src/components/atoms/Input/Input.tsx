@@ -82,7 +82,7 @@ const Input = ({
             : e.target.value;
           onChange?.(nextValue);
         }}
-        className="w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition-colors focus:border-[#CBD5E1] disabled:cursor-not-allowed placeholder:text-slate-400"
+        className="h-11 w-full rounded-lg border px-4 text-sm outline-none transition-colors focus:border-[#CBD5E1] disabled:cursor-not-allowed placeholder:text-slate-400"
         style={{
           borderColor: colors.fieldBorder,
           backgroundColor: disabled

@@ -33,7 +33,7 @@ const fieldStyle = {
 };
 
 const buttonClass =
-  'flex w-full items-center justify-between gap-2 rounded-lg border py-2.5 pl-4 pr-3.5 text-left text-sm outline-none transition-colors focus:border-[#CBD5E1]';
+  'flex h-11 w-full items-center justify-between gap-2 rounded-lg border px-4 text-left text-sm outline-none transition-colors focus:border-[#CBD5E1]';
 
 const Dropdown = ({
   label,
@@ -85,7 +85,7 @@ const Dropdown = ({
   return (
     <div
       ref={dropdownRef}
-      className={clsx('relative w-full min-w-40', className)}
+      className={clsx('relative flex w-full min-w-40 flex-col gap-1.5', className)}
     >
       {label && <DropdownLabel label={label} required={required} />}
 

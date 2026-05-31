@@ -309,6 +309,7 @@ const PatientForm = ({
           <Button
             backgroundColor="primary"
             className="min-w-28 px-6 sm:w-auto"
+            disabled={!isPatientFormValid(form)}
             onClick={handleSave}
           >
             {t(isEdit ? 'update' : 'save')}
