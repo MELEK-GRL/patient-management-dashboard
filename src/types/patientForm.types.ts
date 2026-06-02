@@ -1,4 +1,4 @@
-import { formatTodayDate } from '../utils/formatDate';
+import { formatTodayDate, formatTomorrowDate } from '../utils/formatDate';
 
 export type PatientFormState = {
   firstName: string;
@@ -21,13 +21,14 @@ export type PatientFormState = {
 
 export const createInitialPatientFormState = (): PatientFormState => {
   const today = formatTodayDate();
+  const tomorrow = formatTomorrowDate();
 
   return {
     firstName: '',
     lastName: '',
     birthDate: today,
     department: '',
-    appointmentDate: today,
+    appointmentDate: tomorrow,
     status: '',
     priority: '',
     score: '',

@@ -98,6 +98,8 @@ export const editPatientForm = (
 
 export const isPatientFormValid = (form: PatientFormState) =>
   REQUIRED_FIELDS.every((field) => form[field].trim() !== '') &&
+  form.birthDate <= formatTodayDate() &&
+  form.appointmentDate > formatTodayDate() &&
   isValidNameInput(form.firstName) &&
   isValidNameInput(form.lastName) &&
   isValidTextInput(form.diagnosis) &&

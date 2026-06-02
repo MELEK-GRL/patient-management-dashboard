@@ -23,6 +23,7 @@ import {
 } from '../../../types/patientForm.types';
 import { colors } from '../../../styles/colors';
 import { formatPriority } from '../../../utils/patientStatus';
+import { formatTodayDate, formatTomorrowDate } from '../../../utils/formatDate';
 import {
   bloodTypeValues,
   departmentValues,
@@ -55,6 +56,9 @@ const PatientForm = ({
     useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isSave, setIsSave] = useState(false);
+
+  const birthDateMax = useMemo(() => formatTodayDate(), []);
+  const appointmentDateMin = useMemo(() => formatTomorrowDate(), []);
 
   const departmentOptions = useMemo(
     () =>
@@ -178,6 +182,7 @@ const PatientForm = ({
             label={t('birthDate')}
             required
             value={form.birthDate}
+            max={birthDateMax}
             onChange={(value) => updateField('birthDate', value)}
           />
 
@@ -194,6 +199,7 @@ const PatientForm = ({
             label={t('appointmentDate')}
             required
             value={form.appointmentDate}
+            min={appointmentDateMin}
             onChange={(value) => updateField('appointmentDate', value)}
           />
 

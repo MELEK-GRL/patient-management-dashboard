@@ -14,3 +14,14 @@ export const formatTodayDate = () => {
   const day = String(now.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
+
+export const formatDateOffsetFromToday = (days: number) => {
+  const now = new Date();
+  now.setDate(now.getDate() + days);
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+export const formatTomorrowDate = () => formatDateOffsetFromToday(1);
